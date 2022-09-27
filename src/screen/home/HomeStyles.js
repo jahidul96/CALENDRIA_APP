@@ -30,11 +30,14 @@ export const homeStyles = StyleSheet.create({
 		height: "11%",
 		paddingHorizontal: 15,
 		justifyContent: "center",
-		marginBottom: 20,
+		marginBottom: 5,
 	},
 	btnStyle: {
 		borderRadius: 10,
-		height: "100%",
+		height: "70%",
 		backgroundColor: COLORS.yellow,
+	},
+	extraTextStyle: {
+		fontSize: 22,
 	},
 });

@@ -13,16 +13,16 @@ import Group from "./Group";
 const tabName = [
 	{
 		id: 1,
-		title: "Timeline",
+		title: "TIMELINE",
 	},
 	{
 		id: 2,
-		title: "Groups",
+		title: "GROUPS",
 	},
 ];
 
 const Tab = ({allPosts}) => {
-	const [tabTitle, setTabTitle] = useState("Timeline");
+	const [tabTitle, setTabTitle] = useState("TIMELINE");
 	const selectTab = (item) => {
 		setTabTitle(item.title);
 	};
@@ -47,7 +47,7 @@ const Tab = ({allPosts}) => {
 			</View>
 			<View style={{flex: 1}}>
 				<ScrollView contentContainerStyle={styles.contentWrapper}>
-					{tabTitle == "Timeline" ? (
+					{tabTitle == "TIMELINE" ? (
 						<>
 							{allPosts?.length > 0 ? (
 								allPosts.map((post) => (
@@ -62,7 +62,6 @@ const Tab = ({allPosts}) => {
 						</>
 					) : (
 						<>
-							<Group />
 							<Group />
 						</>
 					)}
@@ -100,13 +99,14 @@ const styles = StyleSheet.create({
 	},
 	itemStyle: {
 		width: "50%",
-		height: 60,
+		height: 55,
 		backgroundColor: COLORS.lightGray,
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	itemText: {
 		fontFamily: "Poppins-Regular",
+		fontSize: 16,
 	},
 	borderRightStyle: {
 		borderRightColor: "#bbb",

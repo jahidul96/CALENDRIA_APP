@@ -5,21 +5,25 @@ export const createGroupStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 20,
+		backgroundColor: COLORS.white,
 	},
 	inputWrapper: {
 		flex: 1,
 		marginTop: 80,
 	},
 	inputextraStyle: {
-		borderWidth: 0,
-		backgroundColor: "transparent",
+		shadowColor: "#fff",
+		shadowOffset: {
+			width: 0,
+			height: 0,
+		},
+		shadowOpacity: 0,
+		shadowRadius: 0,
+		elevation: 0,
 	},
 	btnextraStyle: {
 		backgroundColor: COLORS.yellow,
 		borderRadius: 5,
-		height: 60,
-	},
-	btnTextStyle: {
-		color: COLORS.white,
+		height: 50,
 	},
 });

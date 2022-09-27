@@ -1,5 +1,5 @@
 import {Alert, Image, ScrollView, StyleSheet, Text, View} from "react-native";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState, useRef} from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {AppBar, ButtonComp, Input} from "../../component/Reuse/Reuse";
 import {
@@ -18,6 +18,7 @@ const PostComment = ({navigation, route}) => {
 	const [comment, setComment] = useState("");
 	const {loggedUser} = useContext(Context);
 	const {comments} = singlPost;
+	const scrollViewRef = useRef();
 
 	const _commentOnPost = (data) => {
 		if (!comment) {
@@ -46,7 +47,13 @@ const PostComment = ({navigation, route}) => {
 			<View style={{paddingHorizontal: 15}}>
 				<AppBar navigation={navigation} text="PostComment" />
 			</View>
-			<ScrollView style={styles.container}>
+			<ScrollView
+				style={styles.container}
+				ref={scrollViewRef}
+				onContentSizeChange={() =>
+					scrollViewRef.current.scrollToEnd({animated: true})
+				}
+			>
 				{comments?.length == 0 ? (
 					<View style={styles.loadingContainer}>
 						<Text style={{fontSize: 18}}>No comment till now.</Text>

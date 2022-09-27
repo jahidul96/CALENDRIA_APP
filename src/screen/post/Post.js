@@ -2,7 +2,6 @@ import {
 	Alert,
 	Image,
 	ScrollView,
-	ActivityIndicator,
 	Text,
 	TouchableOpacity,
 	View,
@@ -26,6 +25,7 @@ import {useNavigation} from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import COLORS from "../../Colors/COLORS";
 import TagInput from "../../component/TagInput";
+import RNPickerSelect from "react-native-picker-select";
 
 const Post = () => {
 	const [tags, setTags] = useState([]);
@@ -35,6 +35,21 @@ const Post = () => {
 	const navigation = useNavigation();
 	const [uploading, setUploading] = useState(false);
 
+	const items = [
+		{
+			label: "Football",
+			value: "football",
+		},
+		{
+			label: "Baseball",
+			value: "baseball",
+		},
+		{
+			label: "Hockey",
+			value: "hockey",
+		},
+	];
+
 	const _pickDocument = async () => {
 		let result = await DocumentPicker.getDocumentAsync({});
 		alert(result.uri);
@@ -42,6 +57,12 @@ const Post = () => {
 	};
 
 	// console.log("user", user);
+
+	const placeholder = {
+		label: "Group",
+		value: null,
+		color: "#000",
+	};
 
 	const submit = async () => {
 		let fileds = [image, desc];
@@ -127,6 +148,13 @@ const Post = () => {
 					</TouchableOpacity>
 				</View>
 				<View style={postStyles.inputContainer}>
+					<View style={postStyles.rnStyle}>
+						<RNPickerSelect
+							onValueChange={(value) => console.log(value)}
+							items={items}
+							placeholder={placeholder}
+						/>
+					</View>
 					<TagInput value={tags} setValue={setTags} />
 					<View style={{marginTop: 20}}>
 						<Input
@@ -139,9 +167,8 @@ const Post = () => {
 					</View>
 					{uploading ? null : (
 						<ButtonComp
-							text="Submit"
+							text="SUBMIT"
 							extraStyle={postStyles.btnExtraStyle}
-							extraTextStyle={postStyles.btnTextStyle}
 							onPress={submit}
 						/>
 					)}

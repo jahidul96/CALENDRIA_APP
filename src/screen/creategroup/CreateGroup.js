@@ -8,7 +8,7 @@ const CreateGroup = ({navigation}) => {
 	const [group, setGroup] = useState("");
 	return (
 		<SafeAreaView style={createGroupStyles.container}>
-			<AppBar text="Create_Group" navigation={navigation} />
+			<AppBar text="CREATE GROUP" navigation={navigation} />
 
 			<View style={createGroupStyles.inputWrapper}>
 				<Input
@@ -23,7 +23,6 @@ const CreateGroup = ({navigation}) => {
 					<ButtonComp
 						text="Add Group"
 						extraStyle={createGroupStyles.btnextraStyle}
-						extraTextStyle={createGroupStyles.btnTextStyle}
 					/>
 				) : null}
 			</View>

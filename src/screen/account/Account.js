@@ -31,7 +31,7 @@ const Account = ({navigation}) => {
 					</View>
 				</View>
 				<AccountBtnComp
-					text="Upload  Profile pic"
+					text="Upload A Profile Picture"
 					icon={
 						<Feather
 							name="chevron-right"
@@ -41,7 +41,7 @@ const Account = ({navigation}) => {
 					}
 				/>
 				<AccountBtnComp
-					text="Contact"
+					text="Account"
 					icon={
 						<Feather
 							name="chevron-right"
@@ -52,7 +52,7 @@ const Account = ({navigation}) => {
 				/>
 
 				<AccountBtnComp
-					text="Albums"
+					text="Groups"
 					icon={
 						<Feather
 							name="chevron-right"
@@ -62,7 +62,7 @@ const Account = ({navigation}) => {
 					}
 				/>
 				<AccountBtnComp
-					text="Change Password"
+					text="Password & Security"
 					icon={
 						<Feather
 							name="chevron-right"
@@ -73,7 +73,7 @@ const Account = ({navigation}) => {
 				/>
 				<View style={{marginTop: 15}}>
 					<NormalBtn text="Delete My Account" />
-					<NormalBtn text="Log out" />
+					<NormalBtn text="Log Out" />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

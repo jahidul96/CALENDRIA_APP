@@ -21,12 +21,19 @@ export const LoadingComp = ({text}) => (
 	</View>
 );
 
-export const ButtonComp = ({text, onPress, extraStyle, extraTextStyle}) => (
+export const ButtonComp = ({
+	text,
+	onPress,
+	extraStyle,
+	extraTextStyle,
+	plusText,
+}) => (
 	<TouchableOpacity
 		style={[reuseStyles.btnContainer, extraStyle]}
 		onPress={onPress}
 		activeOpacity={0.6}
 	>
+		<Text style={reuseStyles.plusText}>{plusText}</Text>
 		<Text style={[reuseStyles.btnText, extraTextStyle]}>{text}</Text>
 	</TouchableOpacity>
 );
@@ -60,11 +67,22 @@ export const AppBar = ({text, navigation}) => (
 	</View>
 );
 
-export const LinkTextComp = ({text, linkText, pageNavigation, extraStyle}) => (
+export const LinkTextComp = ({
+	text,
+	linkText,
+	pageNavigation,
+	extraStyle,
+	extraLinkStyle,
+	textClick,
+}) => (
 	<View style={[reuseStyles.linkTextWrapper, extraStyle]}>
-		<Text style={reuseStyles.text}>{text}</Text>
+		<TouchableOpacity onPress={textClick && pageNavigation}>
+			<Text style={reuseStyles.text}>{text}</Text>
+		</TouchableOpacity>
 		<TouchableOpacity onPress={pageNavigation}>
-			<Text style={reuseStyles.linkText}>{linkText}</Text>
+			<Text style={[reuseStyles.linkText, extraLinkStyle]}>
+				{linkText}
+			</Text>
 		</TouchableOpacity>
 	</View>
 );

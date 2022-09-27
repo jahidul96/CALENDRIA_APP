@@ -57,9 +57,10 @@ const Home = ({navigation}) => {
 					<Tab allPosts={allPosts} />
 					<View style={homeStyles.btnWrapper}>
 						<ButtonComp
-							text="Add Memories"
+							text="Memories"
+							plusText="+"
 							extraStyle={homeStyles.btnStyle}
-							extraTextStyle={{color: COLORS.white}}
+							extraTextStyle={homeStyles.extraTextStyle}
 						/>
 					</View>
 				</SafeAreaView>

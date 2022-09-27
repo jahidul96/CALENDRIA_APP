@@ -12,7 +12,7 @@ const TagInput = ({value, setValue}) => {
 				inputStyle={styles.inputStyle}
 				tagsStyle={styles.tagsStyle}
 				tagsTextStyle={styles.tagsTextStyle}
-				placeholder="Tags..."
+				placeholder="#Tags"
 				placeholderTextColor="gray"
 				onChangeValue={(tags) => {
 					setValue(tags);
@@ -37,8 +37,6 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		fontSize: 17,
 		paddingHorizontal: 10,
-		borderWidth: 2,
-		borderColor: COLORS.purple,
 		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,

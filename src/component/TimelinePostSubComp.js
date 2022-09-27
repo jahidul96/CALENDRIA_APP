@@ -17,7 +17,7 @@ export const SinglePost = ({postData, value, loggedUser, _LikeOnPost}) => {
 	return (
 		<View style={styles.TimelinePostContainer}>
 			<Image source={{uri: value.fileUrl}} style={styles.imgStyle} />
-			<Tag tags={value} />
+			<Tag tags={value.tags} />
 			<View style={styles.nameContainer}>
 				<Text style={[styles.tabitemText, {color: COLORS.darkGray}]}>
 					PostedBy :
@@ -48,9 +48,9 @@ export const SinglePost = ({postData, value, loggedUser, _LikeOnPost}) => {
 	);
 };
 
-const Tag = ({tags}) => (
+export const Tag = ({tags}) => (
 	<View style={styles.tagContainer}>
-		{tags.tags.map((tag, i) => (
+		{tags.map((tag, i) => (
 			<View key={i} style={styles.tagItem}>
 				<Text style={[styles.tabitemText, styles.tagText]}>{tag}</Text>
 			</View>

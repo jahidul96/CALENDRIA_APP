@@ -20,11 +20,24 @@ export const postStyles = StyleSheet.create({
 		width: 60,
 		height: 60,
 	},
+
 	uploadText: {
 		fontFamily: "Poppins-Regular",
 		fontSize: 17,
 		marginTop: 6,
 		letterSpacing: 1,
+	},
+	rnStyle: {
+		paddingHorizontal: 10,
+		borderRadius: 20,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.2,
+		shadowRadius: 1.41,
+		elevation: 1,
 	},
 	inputExtraStyle: {
 		height: 150,
@@ -36,9 +49,6 @@ export const postStyles = StyleSheet.create({
 		marginTop: 30,
 	},
 	btnExtraStyle: {
-		backgroundColor: COLORS.yellow,
-	},
-	btnTextStyle: {
-		color: COLORS.white,
+		marginTop: 20,
 	},
 });

@@ -13,16 +13,15 @@ export const accountStyles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	profileContainer: {
-		paddingTop: 30,
+		paddingTop: 15,
 	},
 	name: {
-		fontSize: 21,
+		fontSize: 17,
 		fontFamily: "Poppins-Regular",
 		letterSpacing: 1,
 	},
 	email: {
 		marginTop: 3,
-		fontSize: 17,
 		letterSpacing: 1,
 		color: COLORS.darkGray,
 	},
@@ -32,8 +31,8 @@ export const accountStyles = StyleSheet.create({
 		marginBottom: 7,
 	},
 	imgStyle: {
-		width: 100,
-		height: 100,
+		width: 80,
+		height: 80,
 		borderRadius: 50,
 		marginBottom: 10,
 		marginTop: 10,

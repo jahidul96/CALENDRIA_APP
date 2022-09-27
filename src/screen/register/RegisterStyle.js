@@ -5,13 +5,25 @@ export const registerStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: COLORS.lightBlue,
-		paddingHorizontal: 15,
+		paddingHorizontal: 25,
 		paddingVertical: 50,
 		justifyContent: "center",
 	},
+	contentWrapper: {},
 
 	logoWrapper: {
-		marginBottom: 50,
+		width: "100%",
+		marginBottom: 20,
 		alignItems: "center",
+	},
+	bottomContainer: {
+		alignItems: "center",
+		marginTop: 20,
+	},
+	textStyle: {
+		color: COLORS.white,
+		fontFamily: "Poppins-Regular",
+		fontSize: 13,
+		marginBottom: 4,
 	},
 });

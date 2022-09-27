@@ -6,7 +6,6 @@ import * as Font from "expo-font";
 import Register from "./src/screen/register/Register";
 import Login from "./src/screen/login/Login";
 import Home from "./src/screen/home/Home";
-import ResetPassword from "./src/screen/resetpassword/ResetPassword";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth} from "./src/firebase/firebase";
 import Context, {AuthContext} from "./context/Context";
@@ -14,6 +13,7 @@ import CreateGroup from "./src/screen/creategroup/CreateGroup";
 import Account from "./src/screen/account/Account";
 import Post from "./src/screen/post/Post";
 import PostComment from "./src/screen/postComment/PostComment";
+import ResetPassword from "./src/screen/resetpassword/ResetPassword";
 
 const Stack = createNativeStackNavigator();
 

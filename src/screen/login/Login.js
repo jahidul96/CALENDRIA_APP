@@ -1,6 +1,5 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {useContext, useState} from "react";
-import {Calendria_Logo_mark_Yellow} from "../../svgImages";
 import {
 	ButtonComp,
 	Input,
@@ -13,6 +12,7 @@ import {signinWithFb} from "../../firebase/FbAuth/FbAuthFunc";
 import COLORS from "../../Colors/COLORS";
 import {getCurrentUser} from "../../firebase/FireStore/FirestoreFunc";
 import {AuthContext} from "../../../context/Context";
+import {Calendria_Logo_Yellow} from "../../svgImages";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
@@ -41,16 +41,11 @@ const Login = () => {
 			});
 	};
 
-	const extraStyle = {backgroundColor: COLORS.yellow};
-	const extraTextStyle = {
-		color: COLORS.white,
-	};
-
 	return (
 		<View style={registerStyles.container}>
 			{uploading && <LoadingComp text="Loggingin..." />}
 			<View style={registerStyles.logoWrapper}>
-				<Calendria_Logo_mark_Yellow width={120} height={100} />
+				<Calendria_Logo_Yellow width={"100%"} height={100} />
 			</View>
 			<View>
 				<Input placeholder="Email" setValue={setEmail} />
@@ -60,23 +55,19 @@ const Login = () => {
 					secureTextEntry={true}
 				/>
 				{uploading ? null : (
-					<ButtonComp
-						text="Sign up"
-						onPress={login}
-						extraStyle={extraStyle}
-						extraTextStyle={extraTextStyle}
-					/>
+					<ButtonComp text="LOG IN" onPress={login} />
 				)}
 			</View>
 			<LinkTextComp
-				text="Don't Have an Account ?"
-				linkText="SIGNUP"
-				pageNavigation={() => navigation.navigate("Register")}
+				text="Forgot password ?"
+				pageNavigation={() => navigation.navigate("ResetPassword")}
+				extraStyle={{marginTop: 20}}
+				textClick={true}
 			/>
 			<LinkTextComp
-				text="Forgot password ?"
-				linkText="Reset"
-				pageNavigation={() => navigation.navigate("ResetPassword")}
+				text="Don't Have an Account ?"
+				linkText="Sign Up"
+				pageNavigation={() => navigation.navigate("Register")}
 				extraStyle={{marginTop: 10}}
 			/>
 		</View>

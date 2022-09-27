@@ -34,11 +34,11 @@ const DrawerTab = ({toggleNav}) => {
 
 			<View style={{marginVertical: 10}}>
 				<DrawerTabItem
-					text="Create Group"
+					text="CREATE GROUP"
 					onPress={() => navigateFunc("CreateGroup")}
 				/>
 				<DrawerTabItem
-					text="Post"
+					text="ADD POST"
 					onPress={() => navigateFunc("Post")}
 				/>
 			</View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	text: {
-		fontSize: 18,
+		fontSize: 16,
 		marginLeft: 5,
 		fontFamily: "Poppins-Regular",
 		color: COLORS.lightBlue,
