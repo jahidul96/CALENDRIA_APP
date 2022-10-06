@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Feather from "react-native-vector-icons/Feather";
@@ -19,6 +20,7 @@ import {
   getMyGroups,
 } from "../../firebase/FireStore/FirestoreFunc";
 import DrawerTab from "../../component/DrawerTab";
+import COLORS from "../../Colors/COLORS";
 
 const Home = ({ navigation }) => {
   const { setLoggedUser } = useContext(Context);
@@ -26,17 +28,19 @@ const Home = ({ navigation }) => {
   const movetoRight = useRef(new Animated.Value(1)).current;
   const [allPosts, setAllPosts] = useState([]);
   const [mygroups, setMyGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getCurrentUser()
       .then((user) => {
         setLoggedUser(user);
+        getMyGroups(setMyGroups);
+        getAllPosts(setAllPosts);
+        setLoading(false);
       })
       .catch((err) => {
         console.log("user not found");
       });
-    getMyGroups(setMyGroups);
-    getAllPosts(setAllPosts);
   }, []);
 
   const toggleNav = () => {
@@ -48,43 +52,55 @@ const Home = ({ navigation }) => {
     setShow(!show);
   };
 
-  // console.log("mygroups", mygroups[0]);
+  // console.log("mygroups first data", mygroups[0]);
+  // console.log("mygroupsfull data", mygroups);
 
   return (
     <SafeAreaView style={homeStyles.container}>
-      <DrawerTab toggleNav={toggleNav} mygroups={mygroups} />
-      <Animated.View
-        style={[
-          homeStyles.wrapper,
-          { transform: [{ translateX: movetoRight }] },
-        ]}
-      >
-        <SafeAreaView style={{ flex: 1 }}>
-          <TopBar
-            navigation={navigation}
-            onPress={toggleNav}
-            mygroups={mygroups}
-          />
+      {loading ? (
+        <View style={homeStyles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.lightBlue} />
+          <Text style={homeStyles.loadingText}>Loading...</Text>
+        </View>
+      ) : (
+        <>
+          <DrawerTab toggleNav={toggleNav} mygroups={mygroups} />
+          <Animated.View
+            style={[
+              homeStyles.wrapper,
+              { transform: [{ translateX: movetoRight }] },
+            ]}
+          >
+            <SafeAreaView style={{ flex: 1 }}>
+              <TopBar
+                navigation={navigation}
+                onPress={toggleNav}
+                mygroups={mygroups}
+              />
 
-          <Tab allPosts={allPosts} mygroups={mygroups} />
-          <View style={homeStyles.btnWrapper}>
-            <ButtonComp
-              text="Memories"
-              plusText="+"
-              extraStyle={homeStyles.btnStyle}
-              extraTextStyle={homeStyles.extraTextStyle}
-              onPress={() => navigation.navigate("Post")}
-            />
-          </View>
-        </SafeAreaView>
-      </Animated.View>
+              <Tab allPosts={allPosts} mygroups={mygroups} />
+              <View style={homeStyles.btnWrapper}>
+                <ButtonComp
+                  text="Memories"
+                  plusText="+"
+                  extraStyle={homeStyles.btnStyle}
+                  extraTextStyle={homeStyles.extraTextStyle}
+                  onPress={() => navigation.navigate("Post")}
+                />
+              </View>
+            </SafeAreaView>
+          </Animated.View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
 
 const TopBar = ({ navigation, onPress, mygroups }) => {
   const goToGroup = () => {
-    navigation.navigate("MyGroup", { id: mygroups[0]?.id });
+    navigation.navigate("MyGroup", {
+      id: mygroups[0]?.id ? mygroups[0]?.id : null,
+    });
   };
   return (
     <View style={homeStyles.topbarStyle}>

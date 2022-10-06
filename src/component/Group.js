@@ -13,6 +13,8 @@ const Group = ({ groupData }) => {
   const navigation = useNavigation();
   const { value } = groupData;
 
+  // console.log("groupData", groupData);
+
   const gotoDetails = () => {
     navigation.navigate("Groupdetails", { groupData });
   };

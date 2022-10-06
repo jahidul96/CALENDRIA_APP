@@ -9,7 +9,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { registerStyles } from "../register/RegisterStyle";
 import { signinWithFb } from "../../firebase/FbAuth/FbAuthFunc";
-import COLORS from "../../Colors/COLORS";
 import { getCurrentUser } from "../../firebase/FireStore/FirestoreFunc";
 import { AuthContext } from "../../../context/Context";
 import { Calendria_Logo_Yellow } from "../../svgImages";

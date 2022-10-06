@@ -11,14 +11,32 @@ import COLORS from "../Colors/COLORS";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
 
-export const SinglePost = ({ postData, value, loggedUser, _LikeOnPost }) => {
+export const SinglePost = ({
+  postData,
+  value,
+  loggedUser,
+  _LikeOnPost,
+  collectionname,
+  details,
+}) => {
+  const navigation = useNavigation();
   const isLiked = value?.star.filter((s) => s.likedBy == loggedUser?.email);
+
+  const gotoDetails = () => {
+    navigation.navigate("FileDownload", {
+      id: postData.id,
+      fileUrl: postData.value.fileUrl,
+    });
+  };
 
   return (
     <View style={styles.TimelinePostContainer}>
-      <View style={styles.imgContainer}>
+      <TouchableOpacity
+        style={styles.imgContainer}
+        onPress={details ? gotoDetails : null}
+      >
         <Image source={{ uri: value.fileUrl }} style={styles.imgStyle} />
-      </View>
+      </TouchableOpacity>
       <View
         style={{
           paddingHorizontal: 10,
@@ -34,7 +52,11 @@ export const SinglePost = ({ postData, value, loggedUser, _LikeOnPost }) => {
         <Text style={[styles.tabitemText]}>{value.description}</Text>
         <View style={styles.iconContainer}>
           <View style={{ flexDirection: "row" }}>
-            <CommentComp value={value} postData={postData} />
+            <CommentComp
+              value={value}
+              postData={postData}
+              collectionname={collectionname}
+            />
             <LikedComp
               isLiked={isLiked}
               onPress={_LikeOnPost}
@@ -66,11 +88,13 @@ export const Tag = ({ tags }) => (
   </View>
 );
 
-const CommentComp = ({ value, postData }) => {
+const CommentComp = ({ value, postData, collectionname }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("PostComment", { postData })}
+      onPress={() =>
+        navigation.navigate("PostComment", { postData, collectionname })
+      }
     >
       <Entypo name="message" size={24} color={COLORS.lightBlue} />
 
@@ -86,7 +110,7 @@ const LikedComp = ({ isLiked, onPress, value, postData }) => (
     {isLiked.length == 0 ? (
       <TouchableOpacity
         style={styles.likedCounter}
-        onPress={() => onPress(postData, isLiked, value)}
+        onPress={() => onPress(postData, isLiked)}
       >
         <Text style={styles.likeText}>{value.star.length}</Text>
         <Entypo

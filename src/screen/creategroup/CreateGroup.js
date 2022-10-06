@@ -8,7 +8,12 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AppBar, ButtonComp, Input } from "../../component/Reuse/Reuse";
+import {
+  AppBar,
+  ButtonComp,
+  Input,
+  LoadingComp,
+} from "../../component/Reuse/Reuse";
 import { createGroupStyles } from "./CreateGroupStyles";
 import COLORS from "../../Colors/COLORS";
 import * as DocumentPicker from "expo-document-picker";
@@ -30,6 +35,7 @@ const CreateGroup = ({ navigation }) => {
   const [tags, setTags] = useState([]);
   const [participents, setParticipents] = useState([]);
   const { loggedUser } = useContext(Context);
+  const [uploading, setUploading] = useState(false);
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -52,8 +58,9 @@ const CreateGroup = ({ navigation }) => {
       return Alert.alert("Please fill all the field's!");
     }
     if (tags.length == 0 || participents.length == 0) {
-      return Alert.alert("provide at least one tags");
+      return Alert.alert("provide at least one tags/participents");
     }
+    setUploading(true);
     const imgFile = await (await fetch(image)).blob();
     const imagesRef = ref(storage, `images/${imgFile._data.name}`);
     const uploadTask = uploadBytesResumable(imagesRef, imgFile);
@@ -65,7 +72,6 @@ const CreateGroup = ({ navigation }) => {
       email: loggedUser.email,
       createdBy: loggedUser.fullname,
       uid: loggedUser.uid,
-      groupPosts: [],
       createdAt: Timestamp.fromDate(new Date()),
     };
 
@@ -73,6 +79,7 @@ const CreateGroup = ({ navigation }) => {
       "state_changed",
       (snapshot) => {},
       (error) => {
+        setUploading(false);
         return Alert.alert(error.message);
       },
       () => {
@@ -80,6 +87,7 @@ const CreateGroup = ({ navigation }) => {
           groupData.groupImage = downloadURL;
           addGroupToFb(groupData)
             .then((res) => {
+              setUploading(false);
               Alert.alert("GROUP CREATED");
               navigation.navigate("Home");
             })
@@ -93,7 +101,7 @@ const CreateGroup = ({ navigation }) => {
   return (
     <SafeAreaView style={createGroupStyles.container}>
       <AppBar text="CREATE GROUP" navigation={navigation} />
-
+      {uploading && <LoadingComp text="Creating..." />}
       {info ? (
         <ScrollView style={createGroupStyles.detailsContainer}>
           <Details
@@ -104,6 +112,7 @@ const CreateGroup = ({ navigation }) => {
             participents={participents}
             setParticipents={setParticipents}
             onPress={submit}
+            uploading={uploading}
           />
         </ScrollView>
       ) : (
@@ -139,8 +148,13 @@ const Details = ({
   setParticipents,
   participents,
   onPress,
+  uploading,
 }) => (
-  <>
+  <View
+    style={{
+      paddingBottom: 50,
+    }}
+  >
     <View style={createGroupStyles.imgWrapper}>
       <TouchableOpacity
         style={createGroupStyles.imgcontainer}
@@ -174,12 +188,14 @@ const Details = ({
       placeholder="Participent Email's"
       extraStyle={{ marginTop: 15 }}
     />
-    <ButtonComp
-      text="CREATE"
-      extraStyle={{ marginTop: 20 }}
-      onPress={onPress}
-    />
-  </>
+    {uploading ? null : (
+      <ButtonComp
+        text="CREATE"
+        extraStyle={{ marginTop: 20, marginBottom: 20 }}
+        onPress={onPress}
+      />
+    )}
+  </View>
 );
 
 export default CreateGroup;

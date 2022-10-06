@@ -9,7 +9,12 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { AppBar, NormalBtn, ProfileComp } from "../../component/Reuse/Reuse";
+import {
+  AppBar,
+  LoadingComp,
+  NormalBtn,
+  ProfileComp,
+} from "../../component/Reuse/Reuse";
 import COLORS from "../../Colors/COLORS";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Context from "../../../context/Context";
@@ -22,20 +27,30 @@ const MyGroup = ({ route }) => {
   const navigation = useNavigation();
   const [group, setGroup] = useState(null);
   const { id } = route.params;
-  const posts = false;
+  const [uploading, setUploading] = useState(false);
+
+  // console.log(id);
+  // console.log(group);
 
   useEffect(() => {
-    getSingleGroup(id, setGroup, posts);
+    if (id == null) {
+      return setGroup([]);
+    } else {
+      getSingleGroup(id, setGroup);
+    }
   }, []);
 
   const deleteGroup = () => {
+    setUploading(true);
     const collectionname = "Groups";
     deleteFromFb(id, collectionname)
       .then(() => {
+        setUploading(false);
         Alert.alert("Group deleted succesfully");
         navigation.navigate("Home");
       })
       .catch((err) => {
+        setUploading(false);
         Alert.alert("something went wrong!");
       });
   };
@@ -48,10 +63,11 @@ const MyGroup = ({ route }) => {
       <View style={styles.topBarWrapper}>
         <AppBar navigation={navigation} />
       </View>
-      {group == null ? (
+      {group?.length == 0 ? (
         <EmptyGroupComp navigation={navigation} />
       ) : (
         <ScrollView>
+          {uploading && <LoadingComp />}
           <View style={styles.groupNameContainer}>
             <Text style={styles.name}>{group?.groupname}</Text>
             <View

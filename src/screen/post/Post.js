@@ -20,6 +20,7 @@ import {
   addPostToFb,
   addPostToGroup,
   getAllGroups,
+  getMyGroups,
   getSingleGroup,
 } from "../../firebase/FireStore/FirestoreFunc";
 import { storage } from "../../firebase/firebase";
@@ -39,16 +40,17 @@ const Post = () => {
   const { loggedUser } = useContext(Context);
   const navigation = useNavigation();
   const [uploading, setUploading] = useState(false);
-  const [allGroups, setAllGroups] = useState([]);
+  const [myGroups, setMyGroups] = useState([]);
   const [show, setShow] = useState(false);
   const [groupname, setGroupName] = useState("");
   const [groupPosts, setGroupPosts] = useState([]);
   const [groupId, setGroupId] = useState("");
+  const posts = true;
 
   const selectGroup = (name, id) => {
     setGroupName(name);
     setGroupId(id);
-    getSingleGroup(id, setGroupPosts);
+    getSingleGroup(id, setGroupPosts, posts);
     setShow(!show);
   };
 
@@ -84,6 +86,8 @@ const Post = () => {
       postedAt: Timestamp.fromDate(new Date()),
       star: [],
       comments: [],
+      groupId,
+      groupname,
     };
 
     return uploadTask.on(
@@ -96,9 +100,7 @@ const Post = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           postData.fileUrl = downloadURL;
-          let value = [...groupPosts, postData];
-          setGroupPosts(value);
-          addPostToGroup(value, groupId)
+          addPostToGroup(postData)
             .then((res) => {
               setUploading(false);
               Alert.alert("post added succesfully");
@@ -114,7 +116,7 @@ const Post = () => {
   };
 
   useEffect(() => {
-    getAllGroups(setAllGroups);
+    getMyGroups(setMyGroups);
   }, []);
 
   // console.log("allGroups ==========================???", allGroups);
@@ -151,7 +153,7 @@ const Post = () => {
         <View style={postStyles.inputContainer}>
           <View style={postStyles.rnStyle}>
             <Picker
-              data={allGroups}
+              data={myGroups}
               onPress={selectGroup}
               show={show}
               setShow={setShow}

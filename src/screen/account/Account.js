@@ -8,13 +8,18 @@ import {
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AppBar, ButtonComp, NormalBtn } from "../../component/Reuse/Reuse";
+import {
+  AppBar,
+  ButtonComp,
+  LoadingComp,
+  NormalBtn,
+} from "../../component/Reuse/Reuse";
 import { accountStyles } from "./AccountStyle";
 import Context, { AuthContext } from "../../../context/Context";
 import Feather from "react-native-vector-icons/Feather";
 import COLORS from "../../Colors/COLORS";
 import { doc, deleteDoc } from "firebase/firestore";
-import { signOut } from "firebase/auth";
+import { deleteUser, signOut } from "firebase/auth";
 import { auth, storage } from "../../firebase/firebase";
 import {
   addProfilePic,
@@ -30,13 +35,14 @@ const Account = ({ navigation }) => {
   const { loggedUser, setLoggedUser } = useContext(Context);
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
-  //   console.log("loggedUser", loggedUser);
-
+  const [uploading, setUploading] = useState(false);
   const { setAuthUser } = useContext(AuthContext);
 
   const logout = () => {
+    setUploading(true);
     signOut(auth).then(() => {
       setAuthUser(null);
+      setUploading(false);
       navigation.navigate("Register");
     });
   };
@@ -48,6 +54,7 @@ const Account = ({ navigation }) => {
   };
 
   const uploadProfilePic = async () => {
+    setUploading(true);
     const imgFile = await (await fetch(image)).blob();
     const imagesRef = ref(storage, `profilePic/${imgFile._data.name}`);
     const uploadTask = uploadBytesResumable(imagesRef, imgFile);
@@ -55,12 +62,14 @@ const Account = ({ navigation }) => {
       "state_changed",
       (snapshot) => {},
       (error) => {
+        setUploading(false);
         return Alert.alert(error.message);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           addProfilePic(downloadURL)
             .then(() => {
+              setUploading(false);
               Alert.alert("profile pic added succesfully");
               setShow(false);
               getCurrentUser().then((user) => {
@@ -68,6 +77,7 @@ const Account = ({ navigation }) => {
               });
             })
             .catch((err) => {
+              setUploading(false);
               Alert.alert("something went wrong");
             });
         });
@@ -76,19 +86,31 @@ const Account = ({ navigation }) => {
   };
 
   const deleteAccount = () => {
+    setUploading(true);
     const collectionname = "Users";
     deleteFromFb(auth.currentUser.uid, collectionname)
       .then((res) => {
-        setAuthUser(null);
-        navigation.navigate("Register");
+        deleteUser(auth.currentUser)
+          .then(() => {
+            setUploading(false);
+            console.log("user deleted");
+            setAuthUser(null);
+            navigation.navigate("Register");
+          })
+          .catch((error) => {
+            setUploading(false);
+            Alert.alert("something went wrong!");
+          });
       })
       .catch((err) => {
+        setUploading(false);
         Alert.alert("something went wrong!");
       });
   };
 
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
+      {uploading && <LoadingComp />}
       <View style={{ paddingHorizontal: 20 }}>
         <AppBar text="Account" navigation={navigation} />
       </View>

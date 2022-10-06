@@ -12,7 +12,7 @@ import { Timestamp } from "firebase/firestore";
 import Context from "../../../context/Context";
 
 const PostComment = ({ navigation, route }) => {
-  const { postData } = route.params;
+  const { postData, collectionname } = route.params;
   const [allComments, setAllComments] = useState(postData.value.comments);
   const [singlPost, setSinglePost] = useState({});
   const [comment, setComment] = useState("");
@@ -34,12 +34,12 @@ const PostComment = ({ navigation, route }) => {
     ];
     setAllComments(val);
 
-    commentPost(val, data.id);
+    commentPost(val, data.id, collectionname);
     setComment("");
   };
 
   useEffect(() => {
-    getSinglePost(setSinglePost, postData.id);
+    getSinglePost(setSinglePost, postData.id, collectionname);
   }, []);
 
   return (
@@ -151,13 +151,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 10,
-    backgroundColor: COLORS.gray,
+    backgroundColor: COLORS.lightGray,
     paddingHorizontal: 15,
   },
   InputExtraStyle: {
     width: "65%",
-    borderWidth: 1,
-    borderColor: COLORS.gray,
+    elevation: 1,
     height: 40,
     borderRadius: 10,
     fontSize: 13,

@@ -6,9 +6,9 @@ import { SinglePost } from "./TimelinePostSubComp";
 const TimelinePost = ({ postData }) => {
   const { value } = postData;
   const { loggedUser } = useContext(Context);
+  let collectionname = "Allposts";
 
   const _LikeOnPost = (data, isLiked) => {
-    let collectionname = "Allposts";
     if (isLiked.length == 0) {
       let val = [
         ...data.value.star,
@@ -28,6 +28,7 @@ const TimelinePost = ({ postData }) => {
       value={value}
       loggedUser={loggedUser}
       _LikeOnPost={_LikeOnPost}
+      collectionname={collectionname}
     />
   );
 };

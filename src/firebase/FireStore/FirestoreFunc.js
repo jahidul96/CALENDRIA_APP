@@ -42,6 +42,10 @@ export const addGroupToFb = async (groupData) => {
   await addDoc(collection(db, "Groups"), groupData);
 };
 
+export const addPostToGroup = async (postdata) => {
+  await addDoc(collection(db, "AllGroupPosts"), postdata);
+};
+
 export const getAllPosts = (setAllPosts) => {
   const cRef = collection(db, "Allposts");
   const q = query(cRef, orderBy("postedAt", "desc"));
@@ -52,6 +56,18 @@ export const getAllPosts = (setAllPosts) => {
       posts?.push(data);
     });
     setAllPosts(posts);
+  });
+};
+export const getSingleGroupPosts = (setGroupPosts, id) => {
+  const cRef = collection(db, "AllGroupPosts");
+  const q = query(cRef, where("groupId", "==", id));
+  onSnapshot(q, (querySnapshot) => {
+    let posts = [];
+    querySnapshot.forEach((doc) => {
+      let data = { value: doc.data(), id: doc.id };
+      posts.push(data);
+    });
+    setGroupPosts(posts);
   });
 };
 
@@ -78,30 +94,17 @@ export const getAllGroups = async (setAllGroups) => {
   setAllGroups(groups);
 };
 
-export const getSinglePost = (setSinglePost, id) => {
-  onSnapshot(doc(db, "Allposts", id), (doc) => {
+export const getSinglePost = (setSinglePost, id, collectionname) => {
+  onSnapshot(doc(db, collectionname, id), (doc) => {
     setSinglePost(doc.data());
   });
 };
-export const getSingleGroup = (id, setGroupPosts, posts) => {
-  if (posts == true) {
-    onSnapshot(doc(db, "Groups", id), (doc) => {
-      setGroupPosts(doc.data().groupPosts);
-    });
-  } else {
-    onSnapshot(doc(db, "Groups", id), (doc) => {
-      setGroupPosts(doc.data());
-    });
-  }
+export const getSingleGroup = (id, setGroupPosts) => {
+  onSnapshot(doc(db, "Groups", id), (doc) => {
+    setGroupPosts(doc.data());
+  });
 };
 
-export const addPostToGroup = async (postdata, id) => {
-  await setDoc(
-    doc(db, "Groups", id),
-    { groupPosts: postdata },
-    { merge: true }
-  );
-};
 export const addProfilePic = async (url) => {
   await setDoc(
     doc(db, "Users", auth.currentUser.uid),
@@ -114,19 +117,19 @@ export const addUserToGroup = async (data, id) => {
   await setDoc(doc(db, "Groups", id), { participents: data }, { merge: true });
 };
 
-export const commentPost = async (userComment, id) => {
+export const commentPost = async (userComment, id, collectionname) => {
   await setDoc(
-    doc(db, "Allposts", id),
+    doc(db, collectionname, id),
     { comments: userComment },
     { merge: true }
   );
 };
 export const likePost = async (liked, id, collectionname) => {
-  if (collectionname == "Allposts") {
-    await updateDoc(doc(db, "Allposts", id), { star: liked }, { merge: true });
-  } else {
-    await updateDoc(doc(db, "Groups", id), { star: liked }, { merge: true });
-  }
+  await updateDoc(
+    doc(db, collectionname, id),
+    { star: liked },
+    { merge: true }
+  );
 };
 
 // export const uploadImage = async (image) => {

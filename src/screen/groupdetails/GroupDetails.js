@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -14,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import COLORS from "../../Colors/COLORS";
 import {
   getSingleGroup,
+  getSingleGroupPosts,
   likePost,
 } from "../../firebase/FireStore/FirestoreFunc";
 import Context from "../../../context/Context";
@@ -26,45 +28,29 @@ const GroupDetails = ({ route }) => {
   const id = groupData.id;
   const { value } = groupData;
   const { loggedUser } = useContext(Context);
-  const posts = true;
+  let collectionname = "AllGroupPosts";
 
+  // console.log(id);
+  // console.log("singlegroupPosts", groupPosts);
   useEffect(() => {
-    getSingleGroup(id, setGroupPosts, posts);
+    getSingleGroupPosts(setGroupPosts, id);
   }, []);
 
-  const _LikeOnPost = (data, isLiked, value) => {
-    let collectionname = "Groups";
-
-    const something = groupPosts.filter((gpost) => gpost == value);
-
-    console.log("something", something);
-
-    // const res = [...something];
-
-    // console.log("res", res);
-
-    // console.log("groupPosts", groupPosts);
-
-    // console.log("isLiked", isLiked);
-
-    // console.log("value single post =================?/////", value);
-    // if (isLiked.length == 0) {
-    //   let val = [
-    //     ...value.star,
-    //     {
-    //       likedBy: loggedUser.email,
-    //     },
-    //   ];
-    //   likePost(val, data.id, collectionname);
-    // } else {
-    //   let val = value.star.filter((st) => st.likedBy != loggedUser.email);
-    //   likePost(val, data.id, collectionname);
-    // }
+  const _LikeOnPost = (data, isLiked) => {
+    // console.log(data);
+    if (isLiked.length == 0) {
+      let val = [
+        ...data.value.star,
+        {
+          likedBy: loggedUser.email,
+        },
+      ];
+      likePost(val, data.id, collectionname);
+    } else {
+      let val = data.value.star.filter((st) => st.likedBy != loggedUser.email);
+      likePost(val, data.id, collectionname);
+    }
   };
-
-  //   console.log("id ========>", id);
-  //   console.log("value ========>", value);
-  //   console.log("this groupPosts ========>", groupPosts);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topbarContainer}>
@@ -87,17 +73,21 @@ const GroupDetails = ({ route }) => {
 
         <View>
           {groupPosts.length == 0 ? (
-            <View>
-              <Text>No post in this group</Text>
+            <View style={styles.emptyContainer}>
+              <Text style={[styles.groupName, { fontSize: 18 }]}>
+                No post in this group till now
+              </Text>
             </View>
           ) : (
             groupPosts.map((post, i) => (
               <SinglePost
                 key={i}
-                value={post}
+                value={post.value}
                 loggedUser={loggedUser}
-                postData={groupData}
+                postData={post}
                 _LikeOnPost={_LikeOnPost}
+                collectionname={collectionname}
+                details={true}
               />
             ))
           )}
@@ -143,5 +133,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 3,
     letterSpacing: 1,
+  },
+  emptyContainer: {
+    marginTop: 50,
+    alignItems: "center",
   },
 });

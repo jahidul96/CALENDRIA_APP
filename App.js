@@ -17,6 +17,7 @@ import ResetPassword from "./src/screen/resetpassword/ResetPassword";
 import GroupDetails from "./src/screen/groupdetails/GroupDetails";
 import MyGroup from "./src/screen/mygroup/MyGroup";
 import AddToGroup from "./src/screen/addtogroup/AddToGroup";
+import FileDownload from "./src/screen/groupdetails/FileDownload";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,9 +42,7 @@ const App = () => {
         setAppIsReady(true);
       }
     }
-
     prepare();
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(user);
@@ -78,6 +77,7 @@ const App = () => {
               <Stack.Screen name="Groupdetails" component={GroupDetails} />
               <Stack.Screen name="MyGroup" component={MyGroup} />
               <Stack.Screen name="AddToGroup" component={AddToGroup} />
+              <Stack.Screen name="FileDownload" component={FileDownload} />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator screenOptions={{ headerShown: false }}>

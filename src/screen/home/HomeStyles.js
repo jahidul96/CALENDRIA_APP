@@ -46,4 +46,15 @@ export const homeStyles = StyleSheet.create({
     top: -10,
     fontFamily: "Poppins-Regular",
   },
+
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 15,
+    fontFamily: "Poppins-Regular",
+    fontSize: 18,
+  },
 });
