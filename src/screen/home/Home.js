@@ -14,6 +14,7 @@ import { homeStyles } from "./HomeStyles";
 import { ButtonComp } from "../../component/Reuse/Reuse";
 import Tab from "../../component/Tab";
 import Context from "../../../context/Context";
+import { Dimensions } from "react-native";
 import {
   getCurrentUser,
   getInvitedGroups,
@@ -32,6 +33,7 @@ const Home = ({ navigation }) => {
   const [invitedGroup, setInvitedGroup] = useState([]);
   const [loading, setLoading] = useState(true);
   const [groupindex, setGroupIndex] = useState(0);
+  const windowWidth = Dimensions.get("window").width;
 
   useEffect(() => {
     getCurrentUser()
@@ -62,7 +64,7 @@ const Home = ({ navigation }) => {
 
   const toggleNav = () => {
     Animated.timing(movetoRight, {
-      toValue: show ? 0 : 280,
+      toValue: show ? 0 : windowWidth / 1.3,
       duration: 300,
       useNativeDriver: true,
     }).start();

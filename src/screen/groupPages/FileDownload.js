@@ -22,24 +22,19 @@ const FileDownload = ({ route }) => {
   const video = useRef(null);
   const [status, setStatus] = useState({});
 
-  //   console.log(id);
-  //   console.log(fileUrl);
+  const downloadFile = (file) => {
+    // Linking.openURL(fileUrl.url);
+    // const uri = "http://techslides.com/demos/sample-videos/small.mp4";
+    let fileUri = FileSystem.documentDirectory + "aaa.png";
 
-  const downloadFile = async () => {
-    Linking.openURL(fileUrl.url);
-    // const uri =
-    //   "http://firebasestorage.googleapis.com/v0/b/expodemopractice.appspot.com/o/images%2F04f29766-389b-4533-9080-02f45839d7a7.jpeg?alt=media&token=6d47f6ac-30d4-4dcc-a65b-52ab5c7f510b";
-    // let fileUri = FileSystem.documentDirectory + "image.jpeg";
-    // console.log("path", fileUri);
-    // console.log("fileurl", fileUrl);
-    // FileSystem.downloadAsync(uri, fileUri)
-    //   .then(({ uri }) => {
-    //     console.log(uri);
-    //     saveFile(uri);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    FileSystem.downloadAsync(file.url, fileUri)
+      .then(({ uri }) => {
+        console.log(uri);
+        saveFile(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const saveFile = async (fileUri) => {
@@ -53,7 +48,7 @@ const FileDownload = ({ route }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Fontisto name="arrow-left-l" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={downloadFile}>
+          <TouchableOpacity onPress={() => downloadFile(fileUrl)}>
             <AntDesign name="download" size={24} color={COLORS.lightBlue} />
           </TouchableOpacity>
         </View>

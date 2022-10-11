@@ -46,10 +46,6 @@ const DrawerTab = ({ toggleNav, mygroups, setGroupIndex }) => {
           text="CREATE GROUP"
           onPress={() => navigateFunc("CreateGroup")}
         />
-        {/* <DrawerTabItem
-					text="ADD POST"
-					onPress={() => navigateFunc("Post")}
-				/> */}
       </View>
       <ScrollView>
         {mygroups.map((groupData, index) => (
@@ -80,6 +76,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 15,
     paddingHorizontal: 10,
+    paddingRight: 18,
   },
   btnContainer: {
     width: "75%",

@@ -55,7 +55,7 @@ const FileComp = ({ value, video, status, setStatus }) => (
   <View style={styles.imgWrapper}>
     {value.type == "image/jpeg" ? (
       <Image source={{ uri: value.url }} style={styles.fileStyle} />
-    ) : (
+    ) : value.type == "video/mp4" ? (
       <Video
         ref={video}
         style={styles.fileStyle}
@@ -67,7 +67,7 @@ const FileComp = ({ value, video, status, setStatus }) => (
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
-    )}
+    ) : null}
   </View>
 );
 
