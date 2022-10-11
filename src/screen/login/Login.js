@@ -42,7 +42,7 @@ const Login = () => {
 
   return (
     <View style={registerStyles.container}>
-      {uploading && <LoadingComp text="Loggingin..." />}
+      {uploading && <LoadingComp text="LOGGINGIN..." />}
       <View style={registerStyles.logoWrapper}>
         <Calendria_Logo_Yellow width={"100%"} height={100} />
       </View>

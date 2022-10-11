@@ -69,7 +69,7 @@ const Register = () => {
     <View style={registerStyles.container}>
       <View>
         <ScrollView>
-          {uploading && <LoadingComp text="Signingup..." />}
+          {uploading && <LoadingComp text="SIGNINGUP..." />}
           <View style={registerStyles.logoWrapper}>
             <Calendria_Logo_Yellow width={"100%"} height={100} />
           </View>

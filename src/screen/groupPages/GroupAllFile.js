@@ -1,15 +1,18 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../../Colors/COLORS";
 import { AppBar } from "../../component/Reuse/Reuse";
 import { useNavigation } from "@react-navigation/native";
 import { getSingleGroupPosts } from "../../firebase/FireStore/FirestoreFunc";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 const GroupAllFile = ({ route }) => {
   const { value, id } = route.params;
   const navigation = useNavigation();
   const [groupPosts, setGroupPosts] = useState([]);
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
 
   // console.log("id", id);
   // console.log("groupPosts", groupPosts[0].value);
@@ -31,7 +34,13 @@ const GroupAllFile = ({ route }) => {
         ) : (
           <View style={styles.filesMainWrapper}>
             {groupPosts.map((post) => (
-              <FileComp key={post.id} value={post.value.fileUrl} />
+              <FileComp
+                key={post.id}
+                value={post.value.fileUrl}
+                video={video}
+                status={status}
+                setStatus={setStatus}
+              />
             ))}
           </View>
         )}
@@ -42,9 +51,23 @@ const GroupAllFile = ({ route }) => {
 
 export default GroupAllFile;
 
-const FileComp = ({ value }) => (
+const FileComp = ({ value, video, status, setStatus }) => (
   <View style={styles.imgWrapper}>
-    <Image source={{ uri: value.url }} style={styles.fileStyle} />
+    {value.type == "image/jpeg" ? (
+      <Image source={{ uri: value.url }} style={styles.fileStyle} />
+    ) : (
+      <Video
+        ref={video}
+        style={styles.fileStyle}
+        source={{
+          uri: value.url,
+        }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+      />
+    )}
   </View>
 );
 

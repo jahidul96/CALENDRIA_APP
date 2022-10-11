@@ -89,6 +89,7 @@ const GroupDetails = ({ route }) => {
                 postData={post}
                 _LikeOnPost={_LikeOnPost}
                 details={true}
+                seeGroupImage={seeGroupImage}
               />
             ))
           )}

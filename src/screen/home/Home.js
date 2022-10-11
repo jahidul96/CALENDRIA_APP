@@ -102,6 +102,7 @@ const Home = ({ navigation }) => {
                 allPosts={allPosts}
                 mygroups={mygroups}
                 invitedGroups={invitedGroup}
+                selectedGroupId={mygroups[groupindex]?.id}
               />
               <View style={homeStyles.btnWrapper}>
                 <ButtonComp

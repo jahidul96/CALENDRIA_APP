@@ -23,7 +23,7 @@ export const postStyles = StyleSheet.create({
 
   uploadText: {
     fontFamily: "Poppins-Regular",
-    fontSize: 17,
+    fontSize: 16,
     marginTop: 6,
     letterSpacing: 1,
   },

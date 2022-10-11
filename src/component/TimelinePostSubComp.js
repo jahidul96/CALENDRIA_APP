@@ -1,6 +1,8 @@
 import {
   Alert,
   Image,
+  ImageBackground,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,9 +10,13 @@ import {
 } from "react-native";
 import COLORS from "../Colors/COLORS";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import { Video, AVPlaybackStatus } from "expo-av";
+
+const pdfImg =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Td6HMS75aPbyo4oQKVnTIQr4YDjuy35GJQ&usqp=CAU";
 
 export const SinglePost = ({
   postData,
@@ -18,6 +24,7 @@ export const SinglePost = ({
   loggedUser,
   _LikeOnPost,
   details,
+  seeGroupImage,
 }) => {
   const navigation = useNavigation();
   const isLiked = value?.star.filter((s) => s.likedBy == loggedUser?.email);
@@ -33,38 +40,29 @@ export const SinglePost = ({
 
   return (
     <View style={styles.TimelinePostContainer}>
-      {value.fileUrl.type == "image/jpeg" ? (
-        <TouchableOpacity
-          style={styles.imgContainer}
-          onPress={details ? gotoDetails : null}
-        >
-          <Image source={{ uri: value.fileUrl.url }} style={styles.imgStyle} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={styles.imgContainer}
-          onPress={details ? gotoDetails : null}
-        >
-          <Video
-            ref={video}
-            style={styles.imgStyle}
-            source={{
-              uri: value.fileUrl.url,
-            }}
-            useNativeControls
-            resizeMode="contain"
-            isLooping
-            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-          />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={[
+          value.fileUrl.type == "image/jpeg" ||
+          value.fileUrl.type == "video/mp4"
+            ? styles.imgContainer
+            : styles.fileContainer,
+        ]}
+        onPress={details ? gotoDetails : null}
+        activeOpacity={details ? 0.7 : 0.5}
+      >
+        <FileContentComp
+          fileUrl={value.fileUrl}
+          video={video}
+          setStatus={setStatus}
+        />
+      </TouchableOpacity>
 
       <View
         style={{
           paddingHorizontal: 10,
         }}
       >
-        <Tag tags={value.tags} />
+        <Tag tags={value.tags} onPress={seeGroupImage} />
         <View style={styles.nameContainer}>
           <Text style={[styles.tabitemText, { color: COLORS.darkGray }]}>
             PostedBy :
@@ -95,6 +93,39 @@ export const SinglePost = ({
     </View>
   );
 };
+
+export const FileContentComp = ({ fileUrl, video, setStatus }) => (
+  <>
+    {fileUrl.type == "image/jpeg" ? (
+      <Image source={{ uri: fileUrl.url }} style={styles.imgStyle} />
+    ) : fileUrl.type == "application/pdf" ? (
+      <TouchableOpacity onPress={() => Linking.openURL(fileUrl.url)}>
+        <ImageBackground source={{ uri: pdfImg }} style={styles.pdfWrapper}>
+          <Text style={styles.pdfText}>Download Pdf</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+    ) : fileUrl.type == "audio/amr" ? (
+      <TouchableOpacity
+        style={styles.pdfWrapper}
+        onPress={() => Linking.openURL(fileUrl.url)}
+      >
+        <MaterialIcons name="multitrack-audio" size={50} />
+      </TouchableOpacity>
+    ) : (
+      <Video
+        ref={video}
+        style={styles.imgStyle}
+        source={{
+          uri: fileUrl.url,
+        }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+      />
+    )}
+  </>
+);
 
 export const Tag = ({ tags, onPress }) => (
   <TouchableOpacity
@@ -172,6 +203,20 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.gray,
     borderBottomWidth: 1,
   },
+  fileContainer: {
+    width: "100%",
+    height: 100,
+
+    marginBottom: 8,
+  },
+  pdfWrapper: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  pdfText: {},
   nameContainer: {
     flexDirection: "row",
     alignItems: "center",

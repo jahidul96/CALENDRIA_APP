@@ -103,7 +103,7 @@ const CreateGroup = ({ navigation }) => {
   return (
     <SafeAreaView style={createGroupStyles.container}>
       <AppBar text="CREATE GROUP" navigation={navigation} />
-      {uploading && <LoadingComp text="Creating..." />}
+      {uploading && <LoadingComp text="CREATING..." />}
       {info ? (
         <ScrollView style={createGroupStyles.detailsContainer}>
           <Details

@@ -30,6 +30,8 @@ import Context from "../../../context/Context";
 import { Timestamp } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import COLORS from "../../Colors/COLORS";
 import TagInput from "../../component/TagInput";
 import Picker from "../../component/Picker";
@@ -126,10 +128,9 @@ const Post = () => {
     getInvitedGroups(setInvitedGroup);
   }, []);
 
-  // console.log("allGroups ==========================???", allGroups);
   return (
     <SafeAreaView style={postStyles.container}>
-      {uploading && <LoadingComp text="Posting..." />}
+      {uploading && <LoadingComp text="POSTING..." />}
       <AppBar text="Memory" navigation={navigation} />
       <ScrollView>
         <View style={postStyles.imgWrapper}>
@@ -149,7 +150,24 @@ const Post = () => {
                   marginTop: 5,
                 }}
               >
-                <AntDesign name="file1" size={25} color={COLORS.lightBlue} />
+                {type == "image/jpeg" ? (
+                  <Ionicons name="image" size={25} color={COLORS.lightBlue} />
+                ) : type == "video/mp4" ? (
+                  <AntDesign
+                    name="videocamera"
+                    size={25}
+                    color={COLORS.lightBlue}
+                  />
+                ) : type == "audio/amr" ? (
+                  <MaterialIcons
+                    name="multitrack-audio"
+                    size={25}
+                    color={COLORS.lightBlue}
+                  />
+                ) : (
+                  <AntDesign name="file1" size={25} color={COLORS.lightBlue} />
+                )}
+
                 <Text style={postStyles.uploadText}>Added</Text>
               </View>
             ) : (
@@ -179,7 +197,7 @@ const Post = () => {
           </View>
           {uploading ? null : (
             <ButtonComp
-              text="SUBMIT"
+              text="ADD MEMORY"
               extraStyle={postStyles.btnExtraStyle}
               onPress={submit}
             />

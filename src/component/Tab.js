@@ -21,7 +21,7 @@ const tabName = [
   },
 ];
 
-const Tab = ({ allPosts, mygroups, invitedGroups }) => {
+const Tab = ({ allPosts, mygroups, invitedGroups, selectedGroupId }) => {
   const [tabTitle, setTabTitle] = useState("TIMELINE");
 
   // console.log("allposts", allPosts);
@@ -53,7 +53,11 @@ const Tab = ({ allPosts, mygroups, invitedGroups }) => {
             <>
               {allPosts?.length > 0 ? (
                 allPosts.map((post) => (
-                  <TimelinePost key={post.id} postData={post} />
+                  <TimelinePost
+                    key={post.id}
+                    postData={post}
+                    id={selectedGroupId}
+                  />
                 ))
               ) : (
                 <EmptyTimeline
