@@ -14,10 +14,11 @@ import Account from "./src/screen/account/Account";
 import Post from "./src/screen/post/Post";
 import PostComment from "./src/screen/postComment/PostComment";
 import ResetPassword from "./src/screen/resetpassword/ResetPassword";
-import GroupDetails from "./src/screen/groupdetails/GroupDetails";
-import MyGroup from "./src/screen/mygroup/MyGroup";
-import AddToGroup from "./src/screen/addtogroup/AddToGroup";
-import FileDownload from "./src/screen/groupdetails/FileDownload";
+import MyGroup from "./src/screen/groupPages/MyGroup";
+import GroupDetails from "./src/screen/groupPages/GroupDetails";
+import AddToGroup from "./src/screen/groupPages/AddToGroup";
+import FileDownload from "./src/screen/groupPages/FileDownload";
+import GroupAllFile from "./src/screen/groupPages/GroupAllFile";
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,7 @@ const App = () => {
               <Stack.Screen name="MyGroup" component={MyGroup} />
               <Stack.Screen name="AddToGroup" component={AddToGroup} />
               <Stack.Screen name="FileDownload" component={FileDownload} />
+              <Stack.Screen name="GroupAllFile" component={GroupAllFile} />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator screenOptions={{ headerShown: false }}>

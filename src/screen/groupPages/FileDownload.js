@@ -5,7 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import COLORS from "../../Colors/COLORS";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
 const FileDownload = ({ route }) => {
   const { id, fileUrl } = route.params;
   const navigation = useNavigation();
@@ -13,7 +14,26 @@ const FileDownload = ({ route }) => {
   //   console.log(id);
   //   console.log(fileUrl);
 
-  const downloadFile = () => {};
+  const downloadFile = async () => {
+    const uri =
+      "http://firebasestorage.googleapis.com/v0/b/expodemopractice.appspot.com/o/images%2F04f29766-389b-4533-9080-02f45839d7a7.jpeg?alt=media&token=6d47f6ac-30d4-4dcc-a65b-52ab5c7f510b";
+    let fileUri = FileSystem.documentDirectory + "image.jpeg";
+    console.log("path", fileUri);
+    console.log("fileurl", fileUrl);
+    FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        console.log(uri);
+        saveFile(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const saveFile = async (fileUri) => {
+    const asset = await MediaLibrary.createAssetAsync(fileUri);
+    await MediaLibrary.createAlbumAsync("Download", asset, false);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topbarContainer}>
@@ -28,7 +48,7 @@ const FileDownload = ({ route }) => {
       </View>
 
       <View style={styles.contentContainer}>
-        <Image source={{ uri: fileUrl }} style={styles.imgStyle} />
+        <Image source={{ uri: fileUrl.url }} style={styles.imgStyle} />
       </View>
     </SafeAreaView>
   );

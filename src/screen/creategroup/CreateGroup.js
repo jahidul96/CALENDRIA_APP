@@ -23,10 +23,7 @@ import { storage } from "../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Context from "../../../context/Context";
 import { Timestamp } from "firebase/firestore";
-import {
-  addGroupToFb,
-  getAllGroups,
-} from "../../firebase/FireStore/FirestoreFunc";
+import { addGroupToFb } from "../../firebase/FireStore/FirestoreFunc";
 
 const CreateGroup = ({ navigation }) => {
   const [groupname, setGroupName] = useState("");
@@ -52,6 +49,11 @@ const CreateGroup = ({ navigation }) => {
   };
 
   const submit = async () => {
+    const Lower = [];
+
+    participents.forEach((element) => {
+      Lower.push(element.toLowerCase());
+    });
     let fileds = [image, tags, participents];
     let required = fileds.every(Boolean);
     if (!required) {
@@ -68,7 +70,7 @@ const CreateGroup = ({ navigation }) => {
     let groupData = {
       groupname,
       tags,
-      participents,
+      participents: Lower,
       email: loggedUser.email,
       createdBy: loggedUser.fullname,
       uid: loggedUser.uid,

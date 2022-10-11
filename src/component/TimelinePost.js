@@ -6,7 +6,6 @@ import { SinglePost } from "./TimelinePostSubComp";
 const TimelinePost = ({ postData }) => {
   const { value } = postData;
   const { loggedUser } = useContext(Context);
-  let collectionname = "Allposts";
 
   const _LikeOnPost = (data, isLiked) => {
     if (isLiked.length == 0) {
@@ -16,10 +15,10 @@ const TimelinePost = ({ postData }) => {
           likedBy: loggedUser.email,
         },
       ];
-      likePost(val, data.id, collectionname);
+      likePost(val, data.id);
     } else {
       let val = data.value.star.filter((st) => st.likedBy != loggedUser.email);
-      likePost(val, data.id, collectionname);
+      likePost(val, data.id);
     }
   };
   return (
@@ -28,7 +27,6 @@ const TimelinePost = ({ postData }) => {
       value={value}
       loggedUser={loggedUser}
       _LikeOnPost={_LikeOnPost}
-      collectionname={collectionname}
     />
   );
 };

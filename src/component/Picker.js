@@ -29,9 +29,9 @@ const Picker = ({ data, onPress, show, setShow, groupname }) => {
       {show ? (
         <ScrollView style={styles.listWrapper}>
           <View>
-            {data.map((group) => (
+            {data.map((group, i) => (
               <TouchableOpacity
-                key={group.id}
+                key={i}
                 onPress={() => onPress(group.value.groupname, group.id)}
               >
                 <Text style={styles.text}>{group.value.groupname}</Text>

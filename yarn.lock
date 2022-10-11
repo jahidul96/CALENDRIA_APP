@@ -3671,6 +3671,13 @@ expo-asset@~8.6.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
+expo-av@~12.0.4:
+  version "12.0.4"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-12.0.4.tgz#00cf2da76c0c718a1d316f188247dee85ce512c2"
+  integrity sha512-wq3wx6J1aacZEPZce9TK1+o4YTAOWyb5cJ4CqfsgHcXeUdHyO3qbva/5uecigpEYlCxOlWYFhAz2T0dQ7nWSpQ==
+  dependencies:
+    "@expo/config-plugins" "~5.0.0"
+
 expo-constants@~13.2.2, expo-constants@~13.2.4:
   version "13.2.4"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.2.4.tgz#eab4a553f074b2c60ad7a158d3b82e3484a94606"
@@ -3692,7 +3699,7 @@ expo-error-recovery@~3.2.0:
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-3.2.0.tgz#3a4543382904a5e70829cb41d7fc0f022c2bef6e"
   integrity sha512-XZ630ks5HNxa9oc2Ya1hEn1ez031Cy4VnyxerPC2o9fKNKSrD/64cRqGF9NkGM3X2uf8+PCB9adxVflAIXBf6w==
 
-expo-file-system@~14.1.0:
+expo-file-system@^14.1.0, expo-file-system@~14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-14.1.0.tgz#4fa410873ef12ac8bec873593f7489f4305a14b8"
   integrity sha512-lJcPGQ8yKXVknVkD5TmcJnR/TpQbEL0JP8hknLejfq3FIqPqI/LBFn31YiP37grxW8lITz1al8pq5T6CSUjAzQ==
@@ -3712,6 +3719,13 @@ expo-keep-awake@~10.2.0:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-10.2.0.tgz#46f04740bccd321732bbbed93491e2076d5dbbd7"
   integrity sha512-kIRtO4Hmrvxh4E45IPWG/NiUZsuRe1AQwBT09pq+kx8nm6tUS4B9TeL6+1NFy+qVBLbGKDqoQD5Ez7XYTFtBeQ==
 
+expo-media-library@^14.2.0:
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/expo-media-library/-/expo-media-library-14.2.0.tgz#d793ba91a21661920f2f894290670a142d160143"
+  integrity sha512-Z7PFo742oCUDBXkSkz7yqveiRxYxAuxeYOWS6khnEJg0wMghJg1NeSyObFKkfOLEqItbFUJ8r6wi+B97ZGmiFA==
+  dependencies:
+    "@expo/config-plugins" "~5.0.0"
+
 expo-modules-autolinking@0.10.3:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-0.10.3.tgz#31bfcf3e4b613a7c3949fb1f1e9c23eea4c14caf"
@@ -3730,6 +3744,11 @@ expo-modules-core@0.11.5:
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
+
+expo-permissions@^13.2.0:
+  version "13.2.0"
+  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-13.2.0.tgz#9306f1ae3c49dbe9157f948983486ccb19fc2989"
+  integrity sha512-fAvutJjlUjlmyR2jjI9uQT0LXQ+A3U8hZnA4twQG8eXEURR3/V5WSGkx5wwX+7OF6qWR68rvs7Xjkd3ghsCm4w==
 
 expo-splash-screen@~0.16.2:
   version "0.16.2"

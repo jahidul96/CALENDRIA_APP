@@ -11,16 +11,21 @@ import COLORS from "../Colors/COLORS";
 import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 
-const GroupList = ({ groupData, toggleNav }) => {
+const GroupList = ({ groupData, toggleNav, index, setGroupIndex }) => {
   // console.log("groupData", groupData);
   const navigation = useNavigation();
 
-  const onPress = () => {
+  const onPress = (index) => {
+    // alert(index);
+    setGroupIndex(index);
     navigation.navigate("MyGroup", { id: groupData.id });
     toggleNav();
   };
   return (
-    <TouchableOpacity style={[styles.grouplistComp]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.grouplistComp]}
+      onPress={() => onPress(index)}
+    >
       <Image
         source={{ uri: groupData.value.groupImage }}
         style={styles.groupImg}

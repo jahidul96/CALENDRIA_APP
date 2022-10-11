@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import Context from "../../context/Context";
 import GroupList from "./GroupList";
 
-const DrawerTab = ({ toggleNav, mygroups }) => {
+const DrawerTab = ({ toggleNav, mygroups, setGroupIndex }) => {
   const navigation = useNavigation();
   const { loggedUser } = useContext(Context);
 
@@ -52,11 +52,13 @@ const DrawerTab = ({ toggleNav, mygroups }) => {
 				/> */}
       </View>
       <ScrollView>
-        {mygroups.map((groupData) => (
+        {mygroups.map((groupData, index) => (
           <GroupList
             key={groupData.id}
             groupData={groupData}
             toggleNav={toggleNav}
+            index={index}
+            setGroupIndex={setGroupIndex}
           />
         ))}
       </ScrollView>

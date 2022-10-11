@@ -106,7 +106,7 @@ export const ProfileComp = ({
 }) => (
   <TouchableOpacity
     style={[reuseStyles.AccountComp, extraStyle]}
-    onPress={onPress}
+    onPress={onPress ? onPress : null}
   >
     <Image source={{ uri: pic ? pic : img }} style={reuseStyles.accountImg} />
     <View style={reuseStyles.accountLeftContainer}>

@@ -28,10 +28,7 @@ const GroupDetails = ({ route }) => {
   const id = groupData.id;
   const { value } = groupData;
   const { loggedUser } = useContext(Context);
-  let collectionname = "AllGroupPosts";
 
-  // console.log(id);
-  // console.log("singlegroupPosts", groupPosts);
   useEffect(() => {
     getSingleGroupPosts(setGroupPosts, id);
   }, []);
@@ -45,11 +42,15 @@ const GroupDetails = ({ route }) => {
           likedBy: loggedUser.email,
         },
       ];
-      likePost(val, data.id, collectionname);
+      likePost(val, data.id);
     } else {
       let val = data.value.star.filter((st) => st.likedBy != loggedUser.email);
-      likePost(val, data.id, collectionname);
+      likePost(val, data.id);
     }
+  };
+
+  const seeGroupImage = () => {
+    navigation.navigate("GroupAllFile", { value, id });
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -69,6 +70,7 @@ const GroupDetails = ({ route }) => {
             {value.createdAt.toDate().toLocaleDateString()}
           </Text>
           <Text style={styles.groupName}>{value.groupname}</Text>
+          <Tag tags={value.tags} onPress={seeGroupImage} />
         </View>
 
         <View>
@@ -86,7 +88,6 @@ const GroupDetails = ({ route }) => {
                 loggedUser={loggedUser}
                 postData={post}
                 _LikeOnPost={_LikeOnPost}
-                collectionname={collectionname}
                 details={true}
               />
             ))
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   groupNameContainer: {
     paddingHorizontal: 25,
-    height: 100,
+    paddingVertical: 15,
     justifyContent: "center",
     borderBottomColor: COLORS.gray,
     borderBottomWidth: 1,
@@ -131,7 +132,6 @@ const styles = StyleSheet.create({
   groupName: {
     fontFamily: "Poppins-Regular",
     fontSize: 22,
-    marginTop: 3,
     letterSpacing: 1,
   },
   emptyContainer: {

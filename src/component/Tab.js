@@ -21,8 +21,10 @@ const tabName = [
   },
 ];
 
-const Tab = ({ allPosts, mygroups }) => {
+const Tab = ({ allPosts, mygroups, invitedGroups }) => {
   const [tabTitle, setTabTitle] = useState("TIMELINE");
+
+  // console.log("allposts", allPosts);
   const selectTab = (item) => {
     setTabTitle(item.title);
   };
@@ -72,6 +74,17 @@ const Tab = ({ allPosts, mygroups }) => {
                   subText="No Groups Till now."
                 />
               )}
+
+              <View>
+                {invitedGroups?.length > 0 ? (
+                  <View>
+                    <Text style={styles.invitedTExt}>INVITED GROUPS</Text>
+                    {invitedGroups.map((group) => (
+                      <Group key={group.id} groupData={group} />
+                    ))}
+                  </View>
+                ) : null}
+              </View>
             </View>
           )}
         </ScrollView>
@@ -83,17 +96,9 @@ const Tab = ({ allPosts, mygroups }) => {
 export default Tab;
 
 const EmptyTimeline = ({ title, subText }) => (
-  <View
-    style={{
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 80,
-    }}
-  >
-    <Text style={{ fontFamily: "Poppins-Regular", fontSize: 20 }}>{title}</Text>
-    <Text style={{ fontFamily: "Poppins-Regular", fontSize: 20 }}>
-      {subText}
-    </Text>
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>{title}</Text>
+    <Text style={styles.emptyText}>{subText}</Text>
   </View>
 );
 
@@ -126,4 +131,20 @@ const styles = StyleSheet.create({
   contentWrapper: {
     paddingVertical: 20,
   },
+  invitedTExt: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 15,
+    letterSpacing: 1,
+    borderBottomColor: COLORS.gray,
+    borderBottomWidth: 1,
+    marginBottom: 12,
+    paddingBottom: 5,
+  },
+  emptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  emptyText: { fontFamily: "Poppins-Regular", fontSize: 17 },
 });

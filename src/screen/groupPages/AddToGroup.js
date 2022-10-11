@@ -15,10 +15,15 @@ const AddToGroup = ({ route }) => {
   //   alreadyExits
 
   const addUser = () => {
+    const Lower = [];
+
+    users.forEach((element) => {
+      Lower.push(element.toLowerCase());
+    });
     if (users.length == 0) {
       return Alert.alert("at least one email required!");
     }
-    const data = alreadyExits.concat(users);
+    const data = alreadyExits.concat(Lower);
     setAlreadyExists(data);
     addUserToGroup(data, id)
       .then(() => {

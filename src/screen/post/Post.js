@@ -20,6 +20,7 @@ import {
   addPostToFb,
   addPostToGroup,
   getAllGroups,
+  getInvitedGroups,
   getMyGroups,
   getSingleGroup,
 } from "../../firebase/FireStore/FirestoreFunc";
@@ -41,23 +42,28 @@ const Post = () => {
   const navigation = useNavigation();
   const [uploading, setUploading] = useState(false);
   const [myGroups, setMyGroups] = useState([]);
+  const [invitedGroup, setInvitedGroup] = useState([]);
   const [show, setShow] = useState(false);
   const [groupname, setGroupName] = useState("");
-  const [groupPosts, setGroupPosts] = useState([]);
   const [groupId, setGroupId] = useState("");
-  const posts = true;
+  const [type, setType] = useState("");
+
+  // console.log("invitedGroup", invitedGroup);
+  // console.log("myGroups", myGroups);
+
+  const allAccesable_Group = myGroups.concat(invitedGroup);
 
   const selectGroup = (name, id) => {
     setGroupName(name);
     setGroupId(id);
-    getSingleGroup(id, setGroupPosts, posts);
     setShow(!show);
   };
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    alert(result.uri);
     setImage(result.uri);
+    setType(result.mimeType);
+    console.log(result.mimeType);
   };
 
   // console.log("user", user);
@@ -99,7 +105,7 @@ const Post = () => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          postData.fileUrl = downloadURL;
+          postData.fileUrl = { url: downloadURL, type };
           addPostToGroup(postData)
             .then((res) => {
               setUploading(false);
@@ -117,6 +123,7 @@ const Post = () => {
 
   useEffect(() => {
     getMyGroups(setMyGroups);
+    getInvitedGroups(setInvitedGroup);
   }, []);
 
   // console.log("allGroups ==========================???", allGroups);
@@ -153,7 +160,7 @@ const Post = () => {
         <View style={postStyles.inputContainer}>
           <View style={postStyles.rnStyle}>
             <Picker
-              data={myGroups}
+              data={allAccesable_Group}
               onPress={selectGroup}
               show={show}
               setShow={setShow}

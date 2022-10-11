@@ -12,7 +12,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { auth, db, storage } from "../firebase";
+import { auth, db } from "../firebase";
 
 export const addUserToFB = async (info, id) => {
   await setDoc(doc(db, "Users", id), info);
@@ -31,7 +31,8 @@ export const getCurrentUser = async () => {
   } else {
     user = null;
   }
-  user && (user.uid = auth.currentUser.uid);
+  // user && (user.uid = auth.currentUser.uid);
+  // console.log(user);
   return user;
 };
 
@@ -58,6 +59,7 @@ export const getAllPosts = (setAllPosts) => {
     setAllPosts(posts);
   });
 };
+
 export const getSingleGroupPosts = (setGroupPosts, id) => {
   const cRef = collection(db, "AllGroupPosts");
   const q = query(cRef, where("groupId", "==", id));
@@ -81,6 +83,37 @@ export const getMyGroups = (setMyGroups) => {
       groups.push(data);
     });
     setMyGroups(groups);
+    // console.log(groups);
+  });
+};
+export const GroupsGet = async () => {
+  const q = query(
+    collection(db, "Groups"),
+    where("uid", "==", auth.currentUser.uid)
+  );
+  const querySnapshot = await getDocs(q);
+  let groups = [];
+  querySnapshot.forEach((doc) => {
+    let data = { value: doc.data(), id: doc.id };
+    groups.push(data);
+    console.log();
+  });
+  return groups;
+};
+
+export const getInvitedGroups = (setInvitedGroup) => {
+  const cRef = collection(db, "Groups");
+  const q = query(
+    cRef,
+    where("participents", "array-contains", auth.currentUser.email)
+  );
+  onSnapshot(q, (querySnapshot) => {
+    let groups = [];
+    querySnapshot.forEach((doc) => {
+      let data = { value: doc.data(), id: doc.id };
+      groups.push(data);
+    });
+    setInvitedGroup(groups);
   });
 };
 
@@ -94,8 +127,8 @@ export const getAllGroups = async (setAllGroups) => {
   setAllGroups(groups);
 };
 
-export const getSinglePost = (setSinglePost, id, collectionname) => {
-  onSnapshot(doc(db, collectionname, id), (doc) => {
+export const getSinglePost = (setSinglePost, id) => {
+  onSnapshot(doc(db, "AllGroupPosts", id), (doc) => {
     setSinglePost(doc.data());
   });
 };
@@ -117,16 +150,16 @@ export const addUserToGroup = async (data, id) => {
   await setDoc(doc(db, "Groups", id), { participents: data }, { merge: true });
 };
 
-export const commentPost = async (userComment, id, collectionname) => {
+export const commentPost = async (userComment, id) => {
   await setDoc(
-    doc(db, collectionname, id),
+    doc(db, "AllGroupPosts", id),
     { comments: userComment },
     { merge: true }
   );
 };
-export const likePost = async (liked, id, collectionname) => {
+export const likePost = async (liked, id) => {
   await updateDoc(
-    doc(db, collectionname, id),
+    doc(db, "AllGroupPosts", id),
     { star: liked },
     { merge: true }
   );

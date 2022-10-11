@@ -15,33 +15,50 @@ import { ButtonComp } from "../../component/Reuse/Reuse";
 import Tab from "../../component/Tab";
 import Context from "../../../context/Context";
 import {
-  getAllPosts,
   getCurrentUser,
-  getMyGroups,
+  getInvitedGroups,
+  getSingleGroupPosts,
+  GroupsGet,
 } from "../../firebase/FireStore/FirestoreFunc";
 import DrawerTab from "../../component/DrawerTab";
 import COLORS from "../../Colors/COLORS";
 
 const Home = ({ navigation }) => {
-  const { setLoggedUser } = useContext(Context);
+  const { loggedUser, setLoggedUser } = useContext(Context);
   const [show, setShow] = useState(false);
   const movetoRight = useRef(new Animated.Value(1)).current;
   const [allPosts, setAllPosts] = useState([]);
   const [mygroups, setMyGroups] = useState([]);
+  const [invitedGroup, setInvitedGroup] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [groupindex, setGroupIndex] = useState(0);
 
   useEffect(() => {
     getCurrentUser()
       .then((user) => {
         setLoggedUser(user);
-        getMyGroups(setMyGroups);
-        getAllPosts(setAllPosts);
+        getInvitedGroups(setInvitedGroup);
         setLoading(false);
       })
       .catch((err) => {
         console.log("user not found");
       });
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      GroupsGet()
+        .then((data) => {
+          // console.log(data);
+          setMyGroups(data);
+          getSingleGroupPosts(setAllPosts, data[groupindex]?.id);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    });
+    return unsubscribe;
+  }, [groupindex]);
 
   const toggleNav = () => {
     Animated.timing(movetoRight, {
@@ -52,9 +69,6 @@ const Home = ({ navigation }) => {
     setShow(!show);
   };
 
-  // console.log("mygroups first data", mygroups[0]);
-  // console.log("mygroupsfull data", mygroups);
-
   return (
     <SafeAreaView style={homeStyles.container}>
       {loading ? (
@@ -64,7 +78,11 @@ const Home = ({ navigation }) => {
         </View>
       ) : (
         <>
-          <DrawerTab toggleNav={toggleNav} mygroups={mygroups} />
+          <DrawerTab
+            toggleNav={toggleNav}
+            mygroups={mygroups}
+            setGroupIndex={setGroupIndex}
+          />
           <Animated.View
             style={[
               homeStyles.wrapper,
@@ -76,9 +94,15 @@ const Home = ({ navigation }) => {
                 navigation={navigation}
                 onPress={toggleNav}
                 mygroups={mygroups}
+                loggedUser={loggedUser}
+                groupindex={groupindex}
               />
 
-              <Tab allPosts={allPosts} mygroups={mygroups} />
+              <Tab
+                allPosts={allPosts}
+                mygroups={mygroups}
+                invitedGroups={invitedGroup}
+              />
               <View style={homeStyles.btnWrapper}>
                 <ButtonComp
                   text="Memories"
@@ -96,10 +120,10 @@ const Home = ({ navigation }) => {
   );
 };
 
-const TopBar = ({ navigation, onPress, mygroups }) => {
+const TopBar = ({ navigation, onPress, mygroups, loggedUser, groupindex }) => {
   const goToGroup = () => {
     navigation.navigate("MyGroup", {
-      id: mygroups[0]?.id ? mygroups[0]?.id : null,
+      id: mygroups ? mygroups[groupindex]?.id : null,
     });
   };
   return (
@@ -107,14 +131,26 @@ const TopBar = ({ navigation, onPress, mygroups }) => {
       <TouchableOpacity onPress={onPress}>
         <Feather name="menu" size={25} />
       </TouchableOpacity>
-      <Text>Profile name</Text>
+      <Text
+        style={{
+          fontFamily: "Poppins-Regular",
+          fontSize: 17,
+        }}
+      >
+        {mygroups ? mygroups[groupindex]?.value?.groupname : "GROUP NAME"}
+      </Text>
       <TouchableOpacity onPress={goToGroup}>
         <Ionicons name="person-outline" size={25} />
-        {mygroups[0]?.value?.participents?.length > 0 ? (
-          <Text style={homeStyles.groupCounter}>
-            {mygroups[0]?.value?.participents?.length}
-          </Text>
-        ) : null}
+        <Text
+          style={{
+            position: "absolute",
+            right: -3,
+            top: -5,
+            fontFamily: "Poppins-Regular",
+          }}
+        >
+          {mygroups && mygroups[groupindex]?.value?.participents?.length}
+        </Text>
       </TouchableOpacity>
     </View>
   );

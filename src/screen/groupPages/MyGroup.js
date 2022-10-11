@@ -99,7 +99,6 @@ const MyGroup = ({ route }) => {
               <ProfileComp
                 name={loggedUser ? loggedUser.username : "User"}
                 email={loggedUser ? loggedUser.email : "yourEmail@gmail.com"}
-                onPress={() => navigateFunc("Account")}
                 pic={loggedUser?.imgUrl}
                 text={"Owner"}
               />

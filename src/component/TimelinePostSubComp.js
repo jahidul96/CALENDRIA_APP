@@ -6,21 +6,23 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
 import COLORS from "../Colors/COLORS";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
+import React, { useRef, useState } from "react";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 export const SinglePost = ({
   postData,
   value,
   loggedUser,
   _LikeOnPost,
-  collectionname,
   details,
 }) => {
   const navigation = useNavigation();
   const isLiked = value?.star.filter((s) => s.likedBy == loggedUser?.email);
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
 
   const gotoDetails = () => {
     navigation.navigate("FileDownload", {
@@ -31,12 +33,32 @@ export const SinglePost = ({
 
   return (
     <View style={styles.TimelinePostContainer}>
-      <TouchableOpacity
-        style={styles.imgContainer}
-        onPress={details ? gotoDetails : null}
-      >
-        <Image source={{ uri: value.fileUrl }} style={styles.imgStyle} />
-      </TouchableOpacity>
+      {value.fileUrl.type == "image/jpeg" ? (
+        <TouchableOpacity
+          style={styles.imgContainer}
+          onPress={details ? gotoDetails : null}
+        >
+          <Image source={{ uri: value.fileUrl.url }} style={styles.imgStyle} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.imgContainer}
+          onPress={details ? gotoDetails : null}
+        >
+          <Video
+            ref={video}
+            style={styles.imgStyle}
+            source={{
+              uri: value.fileUrl.url,
+            }}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        </TouchableOpacity>
+      )}
+
       <View
         style={{
           paddingHorizontal: 10,
@@ -52,11 +74,7 @@ export const SinglePost = ({
         <Text style={[styles.tabitemText]}>{value.description}</Text>
         <View style={styles.iconContainer}>
           <View style={{ flexDirection: "row" }}>
-            <CommentComp
-              value={value}
-              postData={postData}
-              collectionname={collectionname}
-            />
+            <CommentComp value={value} postData={postData} />
             <LikedComp
               isLiked={isLiked}
               onPress={_LikeOnPost}
@@ -78,23 +96,24 @@ export const SinglePost = ({
   );
 };
 
-export const Tag = ({ tags }) => (
-  <View style={styles.tagContainer}>
+export const Tag = ({ tags, onPress }) => (
+  <TouchableOpacity
+    style={styles.tagContainer}
+    onPress={onPress ? onPress : null}
+  >
     {tags.map((tag, i) => (
       <View key={i} style={styles.tagItem}>
         <Text style={[styles.tabitemText, styles.tagText]}>{tag}</Text>
       </View>
     ))}
-  </View>
+  </TouchableOpacity>
 );
 
-const CommentComp = ({ value, postData, collectionname }) => {
+const CommentComp = ({ value, postData }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("PostComment", { postData, collectionname })
-      }
+      onPress={() => navigation.navigate("PostComment", { postData })}
     >
       <Entypo name="message" size={24} color={COLORS.lightBlue} />
 

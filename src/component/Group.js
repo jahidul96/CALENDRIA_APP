@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Tag } from "./TimelinePostSubComp";
 import COLORS from "../Colors/COLORS";
 import { useNavigation } from "@react-navigation/native";
@@ -12,8 +12,13 @@ const tags = ["#local", "#funny"];
 const Group = ({ groupData }) => {
   const navigation = useNavigation();
   const { value } = groupData;
+  const id = groupData.id;
 
   // console.log("groupData", groupData);
+
+  const seeGroupImage = () => {
+    navigation.navigate("GroupAllFile", { value, id });
+  };
 
   const gotoDetails = () => {
     navigation.navigate("Groupdetails", { groupData });
@@ -25,7 +30,7 @@ const Group = ({ groupData }) => {
         <Text style={styles.name}>{value.groupname}</Text>
         <Text style={styles.tabitemText}>{value.createdBy}</Text>
         <View style={{ marginTop: 0 }}>
-          <Tag tags={value.tags} />
+          <Tag tags={value.tags} onPress={seeGroupImage} />
         </View>
       </View>
     </TouchableOpacity>

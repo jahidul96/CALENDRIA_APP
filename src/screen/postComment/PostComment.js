@@ -12,7 +12,7 @@ import { Timestamp } from "firebase/firestore";
 import Context from "../../../context/Context";
 
 const PostComment = ({ navigation, route }) => {
-  const { postData, collectionname } = route.params;
+  const { postData } = route.params;
   const [allComments, setAllComments] = useState(postData.value.comments);
   const [singlPost, setSinglePost] = useState({});
   const [comment, setComment] = useState("");
@@ -29,17 +29,17 @@ const PostComment = ({ navigation, route }) => {
       {
         postedAt: Timestamp.fromDate(new Date()),
         comment,
-        commentedBy: loggedUser,
+        commentedBy: loggedUser.username,
       },
     ];
     setAllComments(val);
 
-    commentPost(val, data.id, collectionname);
+    commentPost(val, data.id);
     setComment("");
   };
 
   useEffect(() => {
-    getSinglePost(setSinglePost, postData.id, collectionname);
+    getSinglePost(setSinglePost, postData.id);
   }, []);
 
   return (
@@ -92,7 +92,7 @@ const UserComment = ({ data }) => (
     </View>
     <View style={{ flex: 1, marginLeft: 15 }}>
       <View style={styles.nameContainer}>
-        <Text style={styles.name}>{data.commentedBy.fullname}</Text>
+        <Text style={styles.name}>{data.commentedBy}</Text>
         <Text>{data.comment}</Text>
       </View>
       <Text style={styles.time}>
