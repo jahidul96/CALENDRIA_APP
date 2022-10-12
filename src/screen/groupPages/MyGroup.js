@@ -150,11 +150,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingHorizontal: 25,
     paddingTop: 20,
-    height: 80,
+    height: 40,
     justifyContent: "center",
   },
   emptyGroupContainer: {
-    marginTop: 30,
     backgroundColor: COLORS.white,
     minHeight: 150,
     justifyContent: "center",

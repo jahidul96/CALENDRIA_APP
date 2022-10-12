@@ -8,10 +8,9 @@ import { auth } from "../../firebase/firebase";
 import { Calendria_Logo_Yellow } from "../../svgImages";
 import COLORS from "../../Colors/COLORS";
 
-const ResetPassword = ({ route }) => {
+const ChangePassword = () => {
   const [email, setEmail] = useState("");
   const navigation = useNavigation();
-  const { outside } = route.params;
 
   const resetPass = () => {
     if (!email) {
@@ -48,25 +47,11 @@ const ResetPassword = ({ route }) => {
           extraStyle={styles.extraStyle}
         />
       </View>
-      <View style={registerStyles.bottomContainer}>
-        {outside ? (
-          <LinkTextComp
-            linkText="Back"
-            pageNavigation={() => navigation.navigate("Account")}
-          />
-        ) : (
-          <LinkTextComp
-            text="Don't Have an Account ?"
-            linkText="Sign Up"
-            pageNavigation={() => navigation.navigate("Register")}
-          />
-        )}
-      </View>
     </View>
   );
 };
 
-export default ResetPassword;
+export default ChangePassword;
 
 const styles = StyleSheet.create({
   extraStyle: {

@@ -157,6 +157,9 @@ const Account = ({ navigation }) => {
           icon={
             <Feather name="chevron-right" size={22} color={COLORS.lightBlue} />
           }
+          onPress={() =>
+            navigation.navigate("ResetPassword", { outside: true })
+          }
         />
         <View style={{ marginTop: 15 }}>
           <NormalBtn text="Delete My Account" onPress={deleteAccount} />

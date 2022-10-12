@@ -57,7 +57,9 @@ const Login = () => {
       </View>
       <LinkTextComp
         text="Forgot password ?"
-        pageNavigation={() => navigation.navigate("ResetPassword")}
+        pageNavigation={() =>
+          navigation.navigate("ResetPassword", { outside: false })
+        }
         extraStyle={{ marginTop: 20 }}
         textClick={true}
       />
