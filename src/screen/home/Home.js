@@ -39,7 +39,6 @@ const Home = ({ navigation }) => {
     getCurrentUser()
       .then((user) => {
         setLoggedUser(user);
-        getInvitedGroups(setInvitedGroup);
         setLoading(false);
       })
       .catch((err) => {
@@ -54,6 +53,7 @@ const Home = ({ navigation }) => {
           // console.log(data);
           setMyGroups(data);
           getSingleGroupPosts(setAllPosts, data[groupindex]?.id);
+          getInvitedGroups(setInvitedGroup);
         })
         .catch((err) => {
           console.log(err.message);

@@ -10,6 +10,14 @@ import COLORS from "../Colors/COLORS";
 import TimelinePost from "./TimelinePost";
 import Group from "./Group";
 
+import {
+  BannerAd,
+  BannerAdSize,
+  GAMBannerAd,
+  TestIds,
+} from "react-native-google-mobile-ads";
+import AdComp from "./AdComp";
+
 const tabName = [
   {
     id: 1,
@@ -51,27 +59,38 @@ const Tab = ({ allPosts, mygroups, invitedGroups, selectedGroupId }) => {
         <ScrollView contentContainerStyle={styles.contentWrapper}>
           {tabTitle == "TIMELINE" ? (
             <>
+              <AdComp />
               {allPosts?.length > 0 ? (
-                allPosts.map((post) => (
-                  <TimelinePost
-                    key={post.id}
-                    postData={post}
-                    id={selectedGroupId}
-                  />
-                ))
+                <>
+                  {allPosts.map((post) => (
+                    <TimelinePost
+                      key={post.id}
+                      postData={post}
+                      id={selectedGroupId}
+                    />
+                  ))}
+                  <AdComp />
+                </>
               ) : (
-                <EmptyTimeline
-                  title="Welcome to your Timeline"
-                  subText="No Post Till now."
-                />
+                <>
+                  <AdComp />
+                  <EmptyTimeline
+                    title="Welcome to your Timeline"
+                    subText="No Post Till now."
+                  />
+                  <AdComp />
+                </>
               )}
             </>
           ) : (
-            <View style={{ paddingHorizontal: 15 }}>
+            <>
+              <AdComp />
               {mygroups?.length > 0 ? (
-                mygroups.map((group) => (
-                  <Group key={group.id} groupData={group} />
-                ))
+                <View style={{ paddingHorizontal: 15, marginTop: 7 }}>
+                  {mygroups.map((group) => (
+                    <Group key={group.id} groupData={group} />
+                  ))}
+                </View>
               ) : (
                 <EmptyTimeline
                   title="Welcome to your Groups"
@@ -79,17 +98,18 @@ const Tab = ({ allPosts, mygroups, invitedGroups, selectedGroupId }) => {
                 />
               )}
 
-              <View>
+              <>
+                <AdComp />
                 {invitedGroups?.length > 0 ? (
-                  <View>
+                  <View style={{ paddingHorizontal: 15 }}>
                     <Text style={styles.invitedTExt}>INVITED GROUPS</Text>
                     {invitedGroups.map((group) => (
                       <Group key={group.id} groupData={group} />
                     ))}
                   </View>
                 ) : null}
-              </View>
-            </View>
+              </>
+            </>
           )}
         </ScrollView>
       </View>
@@ -133,7 +153,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
   },
   contentWrapper: {
-    paddingVertical: 20,
+    // paddingVertical: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
   },
   invitedTExt: {
     fontFamily: "Poppins-Regular",

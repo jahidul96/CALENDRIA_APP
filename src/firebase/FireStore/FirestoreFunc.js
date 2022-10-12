@@ -32,7 +32,7 @@ export const getCurrentUser = async () => {
     user = null;
   }
   // user && (user.uid = auth.currentUser.uid);
-  // console.log(user);
+  console.log(user);
   return user;
 };
 

@@ -118,11 +118,11 @@ const Account = ({ navigation }) => {
         <View style={accountStyles.profileContainer}>
           <View style={accountStyles.profileImageWrapper}>
             <Image
-              source={{ uri: loggedUser.imgUrl ? loggedUser.imgUrl : img }}
+              source={{ uri: loggedUser?.imgUrl ? loggedUser?.imgUrl : img }}
               style={accountStyles.imgStyle}
             />
-            <Text style={accountStyles.name}>{loggedUser.username}</Text>
-            <Text style={accountStyles.email}>{loggedUser.email}</Text>
+            <Text style={accountStyles.name}>{loggedUser?.username}</Text>
+            <Text style={accountStyles.email}>{loggedUser?.email}</Text>
           </View>
         </View>
         {show && image ? (

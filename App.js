@@ -49,7 +49,7 @@ const App = () => {
         setAuthUser(user);
         // console.log("user", user);
       } else {
-        console.log("user not found");
+        console.log("not logged in user");
       }
     });
   }, []);
