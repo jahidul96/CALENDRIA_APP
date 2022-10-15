@@ -20,6 +20,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Context from "../../../context/Context";
 import {
   deleteFromFb,
+  deleteGroupAllPost,
   getSingleGroup,
 } from "../../firebase/FireStore/FirestoreFunc";
 
@@ -45,8 +46,9 @@ const MyGroup = ({ route }) => {
     const collectionname = "Groups";
     deleteFromFb(id, collectionname)
       .then(() => {
+        deleteGroupAllPost(id);
         setUploading(false);
-        Alert.alert("Group deleted succesfully");
+        Alert.alert("GROUP DELETED");
         navigation.navigate("Home");
       })
       .catch((err) => {

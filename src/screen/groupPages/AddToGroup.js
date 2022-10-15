@@ -1,18 +1,18 @@
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppBar, ButtonComp } from "../../component/Reuse/Reuse";
 import COLORS from "../../Colors/COLORS";
 import { useNavigation } from "@react-navigation/native";
 import TagInput from "../../component/TagInput";
 import { addUserToGroup } from "../../firebase/FireStore/FirestoreFunc";
+import Context from "../../../context/Context";
 
 const AddToGroup = ({ route }) => {
   const navigation = useNavigation();
   const [users, setUsers] = useState([]);
   const { id, group } = route.params;
   const [alreadyExits, setAlreadyExists] = useState(group?.participents);
-
-  //   alreadyExits
+  const { loggedUser } = useContext(Context);
 
   const addUser = () => {
     const Lower = [];
@@ -21,19 +21,23 @@ const AddToGroup = ({ route }) => {
       Lower.push(element.toLowerCase());
     });
     if (users.length == 0) {
-      return Alert.alert("at least one email required!");
+      return Alert.alert("AT LEAST ONE USER EMAIL REQUIRED!");
+    }
+    if (Lower.includes(loggedUser.email.toLowerCase())) {
+      return Alert.alert("YOU CAN'T ADD YOUSELF!");
     }
     const data = alreadyExits.concat(Lower);
     setAlreadyExists(data);
     addUserToGroup(data, id)
       .then(() => {
-        Alert.alert("User Added");
+        Alert.alert("USER ADDED");
         navigation.navigate("Home");
       })
       .catch((err) => {
-        Alert.alert("something went wrong");
+        Alert.alert("SOMETHING WENT WRONG");
       });
   };
+
   return (
     <View style={styles.container}>
       <AppBar navigation={navigation} />

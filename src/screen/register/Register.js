@@ -36,7 +36,7 @@ const Register = () => {
     const fileds = [email, password, username, fullname];
     const required = fileds.every(Boolean);
     if (!required) {
-      return Alert.alert("please fill all the fields");
+      return Alert.alert("PLEASE FILL ALL THE FIELD");
     }
     setUploading(true);
 
@@ -58,7 +58,7 @@ const Register = () => {
       })
       .catch((err) => {
         setUploading(false);
-        Alert.alert("something went wrong");
+        Alert.alert("SOMETHING WENT WRONG");
       });
   };
 

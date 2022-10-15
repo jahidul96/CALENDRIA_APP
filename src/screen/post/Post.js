@@ -75,10 +75,10 @@ const Post = () => {
     let fileds = [image, desc, groupname];
     let required = fileds.every(Boolean);
     if (!required) {
-      return Alert.alert("Please fill all the field's!");
+      return Alert.alert("FILL ALL THE FIELD'S!");
     }
     if (tags.length == 0) {
-      return Alert.alert("provide at least one tags");
+      return Alert.alert("PROVIDE AT LEAST ONE TAG");
     }
     setUploading(true);
     const imgFile = await (await fetch(image)).blob();
@@ -111,7 +111,7 @@ const Post = () => {
           addPostToGroup(postData)
             .then((res) => {
               setUploading(false);
-              Alert.alert("post added succesfully");
+              Alert.alert("POST ADDED SUCCESFULLY");
               navigation.navigate("Home");
             })
             .catch((err) => {

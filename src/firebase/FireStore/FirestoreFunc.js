@@ -14,14 +14,6 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
-export const addUserToFB = async (info, id) => {
-  await setDoc(doc(db, "Users", id), info);
-};
-
-export const deleteFromFb = async (id, collectionname) => {
-  await deleteDoc(doc(db, collectionname, id));
-};
-
 export const getCurrentUser = async () => {
   const userRef = doc(db, "Users", auth.currentUser.uid);
   const userSnap = await getDoc(userRef);
@@ -32,8 +24,12 @@ export const getCurrentUser = async () => {
     user = null;
   }
   // user && (user.uid = auth.currentUser.uid);
-  console.log(user);
+  // console.log(user);
   return user;
+};
+
+export const addUserToFB = async (info, id) => {
+  await setDoc(doc(db, "Users", id), info);
 };
 
 export const addPostToFb = async (postData) => {
@@ -45,6 +41,19 @@ export const addGroupToFb = async (groupData) => {
 
 export const addPostToGroup = async (postdata) => {
   await addDoc(collection(db, "AllGroupPosts"), postdata);
+};
+
+export const deleteFromFb = async (id, collectionname) => {
+  await deleteDoc(doc(db, collectionname, id));
+};
+
+export const deleteGroupAllPost = async (id) => {
+  const q = query(collection(db, "AllGroupPosts"), where("groupId", "==", id));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    deleteFromFb(doc.id, "AllGroupPosts");
+  });
 };
 
 export const getAllPosts = (setAllPosts) => {

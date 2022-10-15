@@ -24,7 +24,7 @@ const Login = () => {
     const fileds = [email, password];
     const required = fileds.every(Boolean);
     if (!required) {
-      return Alert.alert("please fill all the fields");
+      return Alert.alert("PLEASE FILL ALL THE FIELD");
     }
     setUploading(true);
     signinWithFb(email, password)
@@ -37,6 +37,7 @@ const Login = () => {
       })
       .catch(() => {
         setUploading(false);
+        Alert.alert("SOMETHING WENT WRONG");
       });
   };
 

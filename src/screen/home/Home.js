@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Alert,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Feather from "react-native-vector-icons/Feather";
@@ -26,14 +28,16 @@ import COLORS from "../../Colors/COLORS";
 
 const Home = ({ navigation }) => {
   const { loggedUser, setLoggedUser } = useContext(Context);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const movetoRight = useRef(new Animated.Value(1)).current;
   const [allPosts, setAllPosts] = useState([]);
   const [mygroups, setMyGroups] = useState([]);
   const [invitedGroup, setInvitedGroup] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [groupindex, setGroupIndex] = useState(0);
   const windowWidth = Dimensions.get("window").width;
+
+  const mergeAllGroup = mygroups.concat(invitedGroup);
 
   useEffect(() => {
     getCurrentUser()
@@ -64,15 +68,32 @@ const Home = ({ navigation }) => {
 
   const toggleNav = () => {
     Animated.timing(movetoRight, {
-      toValue: show ? 0 : windowWidth / 1.3,
-      duration: 300,
+      toValue: show ? windowWidth / 1.3 : 0,
+      duration: 400,
       useNativeDriver: true,
     }).start();
     setShow(!show);
   };
 
+  const offDrawerNav = () => {
+    Animated.timing(movetoRight, {
+      toValue: 0,
+      duration: 700,
+      useNativeDriver: true,
+    }).start();
+    setShow(true);
+  };
+
+  const gotoPost = () => {
+    if (mergeAllGroup.length == 0) {
+      return Alert.alert("CREATE A GROUP TO ADD MEMORY!");
+    }
+    navigation.navigate("Post");
+  };
+
   return (
     <SafeAreaView style={homeStyles.container}>
+      <StatusBar barStyle="light-content" />
       {loading ? (
         <View style={homeStyles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.lightBlue} />
@@ -86,10 +107,12 @@ const Home = ({ navigation }) => {
             setGroupIndex={setGroupIndex}
           />
           <Animated.View
+            onTouchMove={offDrawerNav}
             style={[
               homeStyles.wrapper,
               { transform: [{ translateX: movetoRight }] },
             ]}
+            // ref={movetoRight}
           >
             <SafeAreaView style={{ flex: 1 }}>
               <TopBar
@@ -112,7 +135,7 @@ const Home = ({ navigation }) => {
                   plusText="+"
                   extraStyle={homeStyles.btnStyle}
                   extraTextStyle={homeStyles.extraTextStyle}
-                  onPress={() => navigation.navigate("Post")}
+                  onPress={gotoPost}
                 />
               </View>
             </SafeAreaView>

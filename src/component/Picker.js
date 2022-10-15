@@ -21,9 +21,7 @@ const Picker = ({ data, onPress, show, setShow, groupname }) => {
           setShow(!show);
         }}
       >
-        <Text style={styles.groupname}>
-          {groupname ? groupname : "Groups"}{" "}
-        </Text>
+        <Text style={styles.groupname}>{groupname ? groupname : "Groups"}</Text>
         <AntDesign name="caretdown" />
       </TouchableOpacity>
       {show ? (
@@ -59,7 +57,6 @@ const styles = StyleSheet.create({
     top: 40,
     left: 0,
     width: "100%",
-    minHeight: 80,
     backgroundColor: COLORS.white,
     shadowColor: "#000",
     shadowOffset: {
@@ -74,10 +71,12 @@ const styles = StyleSheet.create({
   },
   groupname: {
     fontFamily: "Poppins-Regular",
+    fontSize: 16,
   },
   text: {
     marginBottom: 10,
     fontFamily: "Poppins-Regular",
+    fontSize: 16,
   },
   closeIcon: {
     position: "absolute",

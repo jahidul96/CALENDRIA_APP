@@ -36,13 +36,12 @@ const CreateGroup = ({ navigation }) => {
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    alert(result.uri);
     setImage(result.uri);
   };
 
   const toggle = () => {
     if (!groupname) {
-      Alert.alert("please provide a group name");
+      Alert.alert("PLEASE A NAME REQUIRED!");
       return;
     }
     setInfo(true);
@@ -57,10 +56,16 @@ const CreateGroup = ({ navigation }) => {
     let fileds = [image, tags, participents];
     let required = fileds.every(Boolean);
     if (!required) {
-      return Alert.alert("Please fill all the field's!");
+      return Alert.alert("FILL ALL FIELD'S");
     }
-    if (tags.length == 0 || participents.length == 0) {
-      return Alert.alert("provide at least one tags/participents");
+    if (tags.length == 0) {
+      return Alert.alert("PROVIDE AT LEAST ONE TAG");
+    }
+    if (participents.length == 0) {
+      return Alert.alert("AT LEAST ONE PARTICIPIENT REQUIRED!");
+    }
+    if (Lower.includes(loggedUser.email.toLowerCase())) {
+      return Alert.alert("YOU CAN'T ADD YOUSELF!");
     }
     setUploading(true);
     const imgFile = await (await fetch(image)).blob();
